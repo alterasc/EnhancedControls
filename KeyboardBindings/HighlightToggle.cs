@@ -1,46 +1,43 @@
 ﻿using Kingmaker;
-using Kingmaker.Code.UI.MVVM;
-using Kingmaker.Code.UI.MVVM.View.Slots;
-using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
-using Kingmaker.UI.InputSystems;
-using Kingmaker.UI.MVVM.View.ServiceWindows.Inventory.VisualSettings;
 using System;
 
 namespace EnhancedControls.KeyboardBindings;
 
 internal class HighlightToggle
 {
-    internal static void Add()
+    private const string BIND_NAME = "EnhancedControls.HighlightToggle";
+
+    internal static void RegisterBinding()
     {
-        var game = Game.Instance;
         try
         {
-            var nextCharacterBind = new KeyBindingData(Main.Settings.HighlightToggle);
+            var keyData = new KeyBindingData(Main.Settings.HighlightToggle);
 
-            game.Keyboard.RegisterBinding(
-                "EnhancedControls.HighlightToggle",
-                nextCharacterBind.Key,
+            Game.Instance.Keyboard.RegisterBinding(
+                BIND_NAME,
+                keyData.Key,
                 new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                nextCharacterBind.IsCtrlDown,
-                nextCharacterBind.IsAltDown,
-                nextCharacterBind.IsShiftDown,
-                Kingmaker.UI.InputSystems.Enums.TriggerType.KeyDown,
-                KeyboardAccess.ModificationSide.Any,
-                true);
-            game.Keyboard.Bind("EnhancedControls.HighlightToggle", ActivateInventorySearchField);
+                keyData.IsCtrlDown,
+                keyData.IsAltDown,
+                keyData.IsShiftDown);
         }
         catch (ArgumentException ex)
         {
-            Main.log.Error($"Incorrect keybind format for NextCharacter action: {ex.Message}");
+            Main.log.Error($"Incorrect keybind format for HighlightToggle action: {ex.Message}");
         }
+    }
+    internal static IDisposable Bind()
+    {
+        if (!Main.TryParseKeyBinding(Main.Settings.HighlightToggle, out _)) return null;
+        return Game.Instance.Keyboard.Bind(BIND_NAME, ActivateInventorySearchField);
     }
 
     internal static void ActivateInventorySearchField()
     {
-        Main.log.Log("Object highlight toggled");
+        if (Game.Instance.Player.IsInCombat) return;
         InteractionHighlightController.Instance.SwitchHighlight();
     }
 }

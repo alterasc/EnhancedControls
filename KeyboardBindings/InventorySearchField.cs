@@ -4,7 +4,6 @@ using Kingmaker.Code.UI.MVVM.View.Slots;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
-using Kingmaker.UI.InputSystems;
 using Kingmaker.UI.MVVM.View.ServiceWindows.Inventory.VisualSettings;
 using System;
 
@@ -12,29 +11,30 @@ namespace EnhancedControls.KeyboardBindings;
 
 internal class InventorySearchField
 {
-    internal static void Add()
+    internal const string BIND_NAME = "EnhancedControls.InventorySearch";
+    internal static void RegisterBinding()
     {
-        var game = Game.Instance;
         try
         {
-            var nextCharacterBind = new KeyBindingData(Main.Settings.InventorySearch);
+            var keyData = new KeyBindingData(Main.Settings.InventorySearch);
 
-            game.Keyboard.RegisterBinding(
-                "EnhancedControls.InventorySearch",
-                nextCharacterBind.Key,
+            Game.Instance.Keyboard.RegisterBinding(
+                BIND_NAME,
+                keyData.Key,
                 new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                nextCharacterBind.IsCtrlDown,
-                nextCharacterBind.IsAltDown,
-                nextCharacterBind.IsShiftDown,
-                Kingmaker.UI.InputSystems.Enums.TriggerType.KeyDown,
-                KeyboardAccess.ModificationSide.Any,
-                true);
-            game.Keyboard.Bind("EnhancedControls.InventorySearch", ActivateInventorySearchField);
+                keyData.IsCtrlDown,
+                keyData.IsAltDown,
+                keyData.IsShiftDown);
         }
         catch (ArgumentException ex)
         {
-            Main.log.Error($"Incorrect keybind format for NextCharacter action: {ex.Message}");
+            Main.log.Error($"Incorrect keybind format for InventorySearch action: {ex.Message}");
         }
+    }
+    internal static IDisposable Bind()
+    {
+        if (!Main.TryParseKeyBinding(Main.Settings.InventorySearch, out _)) return null;
+        return Game.Instance.Keyboard.Bind(BIND_NAME, ActivateInventorySearchField);
     }
 
     internal static void ActivateInventorySearchField()

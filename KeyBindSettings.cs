@@ -10,7 +10,9 @@ public class KeyBindSettings : UnityModManager.ModSettings
 
     public string InventorySearch = "%F";
 
-    public string HighlightToggle = "Z";
+    public string HighlightToggle = "%R";
+
+    public string SeparateEndTurn = "%Space";
 
     public new void Save(UnityModManager.ModEntry modEntry) => Save(this, modEntry);
 }
