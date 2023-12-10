@@ -32,6 +32,20 @@ internal static class SeparateEndTurn
     {
         if (!Main.TryParseKeyBinding(Main.Settings.SeparateEndTurn, out _)) return null;
 
-        return Game.Instance.Keyboard.Bind(BIND_NAME, Game.Instance.EndTurnBind);
+        return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
+        {
+            if (Game.Instance.TurnController.IsPreparationTurn)
+            {
+                var combatVM = Game.Instance.RootUiContext.SurfaceVM.StaticPartVM.SurfaceHUDVM.CombatStartWindowVM;
+                if (combatVM.HasValue && combatVM.Value.CanStartCombat.Value)
+                {
+                    combatVM.Value.StartBattle();
+                }
+            }
+            else
+            {
+                Game.Instance.EndTurnBind();
+            }
+        });
     }
 }
