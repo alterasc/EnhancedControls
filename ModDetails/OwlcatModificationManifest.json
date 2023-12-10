@@ -1,0 +1,12 @@
+{
+  "UniqueName": "EnhancedControls",
+  "Version": "0.1.0",
+  "DisplayName": "Enhanced Controls",
+  "Description": "Adds additional keyboard controls",
+  "Author": "AlterAsc",
+  "ImageName": "enhanced-controls.jpg",
+  "WorkshopId": "3109720295",
+  "Repository": "",
+  "HomePage": "",
+  "Dependencies": []
+}
