@@ -1,13 +1,9 @@
 ﻿using EnhancedControls.KeyboardBindings;
 using HarmonyLib;
 using Kingmaker;
-using Kingmaker.Code.UI.MVVM.View.Loot.PC;
-using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Settings.Entities;
-using Kingmaker.UI.MVVM.View.SpaceCombat.PC;
 using System;
-using System.Collections.Generic;
 using UnityModManagerNet;
 
 namespace EnhancedControls;
@@ -28,22 +24,18 @@ static class Main
         // binding registration patch happens always
         HarmonyInstance.CreateClassProcessor(typeof(BindingsRegistration)).Patch();
         // most binds too
-        HarmonyInstance.CreateClassProcessor(typeof(Binds)).Patch();
-
-
+        HarmonyInstance.CreateClassProcessor(typeof(UsualBinds)).Patch();
 
         // if separate End Turn button is set, patch it too
         if (TryParseKeyBinding(Settings.SeparateEndTurn, out _))
         {
-            HarmonyInstance.CreateClassProcessor(typeof(SurfaceCombatEndTurnButton)).Patch();
-            HarmonyInstance.CreateClassProcessor(typeof(SpaceCombatEndTurnButton)).Patch();
-            HarmonyInstance.CreateClassProcessor(typeof(RemoveEndTurnFromPauseAction)).Patch();
+            HarmonyInstance.CreateClassProcessor(typeof(SeparateEndTurn.BindPatches)).Patch();
         }
 
         // loot pickup
         if (TryParseKeyBinding(Settings.CollectAllAndClose, out _))
         {
-            HarmonyInstance.CreateClassProcessor(typeof(CollectAllAndCloseBind)).Patch();
+            HarmonyInstance.CreateClassProcessor(typeof(CollectAllAndClose.BindPatches)).Patch();
         }
 
         Settings.Save(modEntry);
@@ -82,7 +74,7 @@ public static class BindingsRegistration
 
 
 [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
-public static class Binds
+public static class UsualBinds
 {
     [HarmonyPostfix]
     public static void Add(ServiceWindowsVM __instance)
@@ -91,58 +83,5 @@ public static class Binds
         __instance.AddDisposable(NextCharacter.Bind());
         __instance.AddDisposable(InventorySearchField.Bind());
         __instance.AddDisposable(HighlightToggle.Bind());
-    }
-}
-
-[HarmonyPatch(typeof(SurfaceHUDPCView), nameof(SurfaceHUDPCView.BindViewImplementation))]
-public static class SurfaceCombatEndTurnButton
-{
-    [HarmonyPostfix]
-    public static void Add(SurfaceHUDPCView __instance)
-    {
-        __instance.AddDisposable(SeparateEndTurn.Bind());
-
-    }
-}
-
-[HarmonyPatch(typeof(SpaceCombatServicePanelPCView), nameof(SpaceCombatServicePanelPCView.BindViewImplementation))]
-public static class SpaceCombatEndTurnButton
-{
-    [HarmonyPostfix]
-    public static void Add(SpaceCombatServicePanelPCView __instance)
-    {
-        __instance.AddDisposable(SeparateEndTurn.Bind());
-    }
-}
-
-
-[HarmonyPatch(typeof(Game), nameof(Game.PauseAndTryEndTurnBind))]
-public static class RemoveEndTurnFromPauseAction
-{
-    [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-    {
-        var original = new List<CodeInstruction>(instructions);
-        var newInstructions = instructions;
-        var endTurnBindMethod = AccessTools.Method(typeof(Game), nameof(Game.EndTurnBind));
-        var endTurnCall = original.FindIndex(x => x.Calls(endTurnBindMethod));
-        if (endTurnCall != -1)
-        {
-            //we take all instructions except the one that calls EndTurnBind
-            //and previous one which loads instance on stack as argument
-            original.RemoveRange(endTurnCall - 1, 2);
-            return original;
-        }
-        return newInstructions;
-    }
-}
-
-[HarmonyPatch(typeof(LootCollectorPCView), nameof(LootCollectorPCView.BindViewImplementation))]
-public static class CollectAllAndCloseBind
-{
-    [HarmonyPostfix]
-    public static void Add(LootCollectorPCView __instance)
-    {
-        __instance.AddDisposable(CollectAllAndClose.Bind());
     }
 }

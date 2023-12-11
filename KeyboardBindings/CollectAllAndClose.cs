@@ -1,4 +1,6 @@
-﻿using Kingmaker;
+﻿using HarmonyLib;
+using Kingmaker;
+using Kingmaker.Code.UI.MVVM.View.Loot.PC;
 using Kingmaker.Code.UI.MVVM.VM.Loot;
 using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
@@ -45,5 +47,16 @@ internal static class CollectAllAndClose
                 }
             }
         });
+    }
+
+    [HarmonyPatch]
+    internal static class BindPatches
+    {
+        [HarmonyPatch(typeof(LootCollectorPCView), nameof(LootCollectorPCView.BindViewImplementation))]
+        [HarmonyPostfix]
+        internal static void Add(LootCollectorPCView __instance)
+        {
+            __instance.AddDisposable(Bind());
+        }
     }
 }
