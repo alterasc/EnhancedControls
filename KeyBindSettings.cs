@@ -14,5 +14,7 @@ public class KeyBindSettings : UnityModManager.ModSettings
 
     public string SeparateEndTurn = "%Space";
 
+    public string CollectAllAndClose = "F";
+
     public new void Save(UnityModManager.ModEntry modEntry) => Save(this, modEntry);
 }

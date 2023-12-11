@@ -1,13 +1,13 @@
 ﻿using EnhancedControls.KeyboardBindings;
 using HarmonyLib;
 using Kingmaker;
+using Kingmaker.Code.UI.MVVM.View.Loot.PC;
 using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Settings.Entities;
 using Kingmaker.UI.MVVM.View.SpaceCombat.PC;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityModManagerNet;
 
 namespace EnhancedControls;
@@ -30,12 +30,20 @@ static class Main
         // most binds too
         HarmonyInstance.CreateClassProcessor(typeof(Binds)).Patch();
 
+
+
         // if separate End Turn button is set, patch it too
         if (TryParseKeyBinding(Settings.SeparateEndTurn, out _))
         {
             HarmonyInstance.CreateClassProcessor(typeof(SurfaceCombatEndTurnButton)).Patch();
             HarmonyInstance.CreateClassProcessor(typeof(SpaceCombatEndTurnButton)).Patch();
             HarmonyInstance.CreateClassProcessor(typeof(RemoveEndTurnFromPauseAction)).Patch();
+        }
+
+        // loot pickup
+        if (TryParseKeyBinding(Settings.CollectAllAndClose, out _))
+        {
+            HarmonyInstance.CreateClassProcessor(typeof(CollectAllAndCloseBind)).Patch();
         }
 
         Settings.Save(modEntry);
@@ -68,6 +76,7 @@ public static class BindingsRegistration
         InventorySearchField.RegisterBinding();
         HighlightToggle.RegisterBinding();
         SeparateEndTurn.RegisterBinding();
+        CollectAllAndClose.RegisterBinding();
     }
 }
 
@@ -121,8 +130,19 @@ public static class RemoveEndTurnFromPauseAction
         {
             //we take all instructions except the one that calls EndTurnBind
             //and previous one which loads instance on stack as argument
-            newInstructions = original.Where((x, idx) => idx != endTurnCall && idx != endTurnCall - 1);
+            original.RemoveRange(endTurnCall - 1, 2);
+            return original;
         }
         return newInstructions;
+    }
+}
+
+[HarmonyPatch(typeof(LootCollectorPCView), nameof(LootCollectorPCView.BindViewImplementation))]
+public static class CollectAllAndCloseBind
+{
+    [HarmonyPostfix]
+    public static void Add(LootCollectorPCView __instance)
+    {
+        __instance.AddDisposable(CollectAllAndClose.Bind());
     }
 }
