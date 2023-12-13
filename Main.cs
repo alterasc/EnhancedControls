@@ -40,6 +40,13 @@ static class Main
         {
             HarmonyInstance.CreateClassProcessor(typeof(CollectAllAndClose.BindPatches)).Patch();
         }
+
+        // toggle highlight
+        if (TryParseKeyBinding(Settings.HighlightToggle, out _))
+        {
+            HarmonyInstance.CreateClassProcessor(typeof(HighlightToggle.Patches)).Patch();
+        }
+
         modEntry.OnGUI = OnGUI;
         modEntry.OnSaveGUI = OnSaveGUI;
         Settings.Save(modEntry);
@@ -117,6 +124,5 @@ public static class UsualBinds
         __instance.AddDisposable(NextTab.Bind());
         __instance.AddDisposable(NextCharacter.Bind());
         __instance.AddDisposable(InventorySearchField.Bind());
-        __instance.AddDisposable(HighlightToggle.Bind());
     }
 }
