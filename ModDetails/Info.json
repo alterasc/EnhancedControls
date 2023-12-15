@@ -2,11 +2,11 @@
   "Id": "EnhancedControls",
   "DisplayName": "Enhanced Controls",
   "Author": "AlterAsc",
-  "Version": "0.4.0",
+  "Version": "1.0.0",
   "ManagerVersion": "0.25.0",
   "Requirements": [],
   "AssemblyName": "EnhancedControls.dll",
   "EntryMethod": "EnhancedControls.Main.Load",
   "HomePage": "https://www.nexusmods.com/warhammer40kroguetrader/mods/14",
-  "Repository": ""
+  "Repository": "https://raw.githubusercontent.com/alterasc/EnhancedControls/main/ModDetails/Repository.json"
 }

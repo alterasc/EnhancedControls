@@ -5,7 +5,6 @@ using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
-using System;
 
 namespace EnhancedControls.KeyboardBindings;
 
@@ -13,24 +12,15 @@ internal class HighlightToggle
 {
     private const string BIND_NAME = "EnhancedControls.HighlightToggle";
 
-    internal static void RegisterBinding()
+    internal static void RegisterBinding(KeyBindingData keyData)
     {
-        try
-        {
-            var keyData = new KeyBindingData(Main.Settings.HighlightToggle);
-
-            Game.Instance.Keyboard.RegisterBinding(
-                BIND_NAME,
-                keyData.Key,
-                new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                keyData.IsCtrlDown,
-                keyData.IsAltDown,
-                keyData.IsShiftDown);
-        }
-        catch (ArgumentException ex)
-        {
-            Main.log.Error($"Incorrect keybind format for HighlightToggle action: {ex.Message}");
-        }
+        Game.Instance.Keyboard.RegisterBinding(
+            BIND_NAME,
+            keyData.Key,
+            new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+            keyData.IsCtrlDown,
+            keyData.IsAltDown,
+            keyData.IsShiftDown);
     }
 
     [HarmonyPatch]

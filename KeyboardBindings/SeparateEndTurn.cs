@@ -13,29 +13,19 @@ internal static class SeparateEndTurn
 {
     private const string BIND_NAME = "EnhancedControls.SeparateEndTurn";
 
-    internal static void RegisterBinding()
+    internal static void RegisterBinding(KeyBindingData nextTabBind)
     {
-        try
-        {
-            var nextTabBind = new KeyBindingData(Main.Settings.SeparateEndTurn);
-            Game.Instance.Keyboard.RegisterBinding(
-                       BIND_NAME,
-                       nextTabBind.Key,
-                       new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                       nextTabBind.IsCtrlDown,
-                       nextTabBind.IsAltDown,
-                       nextTabBind.IsShiftDown);
-        }
-        catch (ArgumentException ex)
-        {
-            Main.log.Error($"Incorrect keybind format for SeparateEndTurn action: {ex.Message}");
-        }
+        Game.Instance.Keyboard.RegisterBinding(
+                   BIND_NAME,
+                   nextTabBind.Key,
+                   new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+                   nextTabBind.IsCtrlDown,
+                   nextTabBind.IsAltDown,
+                   nextTabBind.IsShiftDown);
     }
 
     internal static IDisposable Bind()
     {
-        if (!Main.TryParseKeyBinding(Main.Settings.SeparateEndTurn, out _)) return null;
-
         return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
         {
             if (Game.Instance.TurnController.IsPreparationTurn)
@@ -54,7 +44,7 @@ internal static class SeparateEndTurn
     }
 
     [HarmonyPatch]
-    internal static class BindPatches
+    internal static class Patches
     {
         [HarmonyPatch(typeof(SurfaceHUDPCView), nameof(SurfaceHUDPCView.BindViewImplementation))]
         [HarmonyPostfix]

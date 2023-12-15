@@ -1,4 +1,5 @@
-﻿using Kingmaker;
+﻿using HarmonyLib;
+using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.GameModes;
@@ -14,29 +15,19 @@ internal static class NextTab
 {
     private const string BIND_NAME = "EnhancedControls.NextTab";
 
-    internal static void RegisterBinding()
+    internal static void RegisterBinding(KeyBindingData keyBindingData)
     {
-        try
-        {
-            var nextTabBind = new KeyBindingData(Main.Settings.NextTab);
-            Game.Instance.Keyboard.RegisterBinding(
-                       BIND_NAME,
-                       nextTabBind.Key,
-                       new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                       nextTabBind.IsCtrlDown,
-                       nextTabBind.IsAltDown,
-                       nextTabBind.IsShiftDown);
-        }
-        catch (ArgumentException ex)
-        {
-            Main.log.Error($"Incorrect keybind format for NextTab action: {ex.Message}");
-        }
+        Game.Instance.Keyboard.RegisterBinding(
+                   BIND_NAME,
+                   keyBindingData.Key,
+                   new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+                   keyBindingData.IsCtrlDown,
+                   keyBindingData.IsAltDown,
+                   keyBindingData.IsShiftDown);
     }
 
     internal static IDisposable Bind()
     {
-        if (!Main.TryParseKeyBinding(Main.Settings.NextTab, out _)) return null;
-
         return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
         {
             var uiContext = Game.Instance.RootUiContext;
@@ -46,10 +37,6 @@ internal static class NextTab
                 var serviceWindowsVM = uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
                 var characterInfoVM = serviceWindowsVM.CharacterInfoVM.Value;
                 var pageType = characterInfoVM.m_CurrentPage.Value.PageType;
-                if (pageType == CharInfoPageType.Summary)
-                {
-
-                }
                 CharInfoPageType nextTab = pageType switch
                 {
                     CharInfoPageType.Summary => CharInfoPageType.Features,
@@ -85,5 +72,15 @@ internal static class NextTab
                 itemsFilterVm.SetCurrentFilter(nextTab);
             }
         });
+    }
+
+    [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
+    public static class Patches
+    {
+        [HarmonyPostfix]
+        public static void Add(ServiceWindowsVM __instance)
+        {
+            __instance.AddDisposable(Bind());
+        }
     }
 }

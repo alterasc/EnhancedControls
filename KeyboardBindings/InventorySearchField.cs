@@ -1,4 +1,5 @@
-﻿using Kingmaker;
+﻿using HarmonyLib;
+using Kingmaker;
 using Kingmaker.Code.UI.MVVM;
 using Kingmaker.Code.UI.MVVM.View.Slots;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
@@ -12,28 +13,18 @@ namespace EnhancedControls.KeyboardBindings;
 internal class InventorySearchField
 {
     internal const string BIND_NAME = "EnhancedControls.InventorySearch";
-    internal static void RegisterBinding()
+    internal static void RegisterBinding(KeyBindingData keyData)
     {
-        try
-        {
-            var keyData = new KeyBindingData(Main.Settings.InventorySearch);
-
-            Game.Instance.Keyboard.RegisterBinding(
-                BIND_NAME,
-                keyData.Key,
-                new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                keyData.IsCtrlDown,
-                keyData.IsAltDown,
-                keyData.IsShiftDown);
-        }
-        catch (ArgumentException ex)
-        {
-            Main.log.Error($"Incorrect keybind format for InventorySearch action: {ex.Message}");
-        }
+        Game.Instance.Keyboard.RegisterBinding(
+            BIND_NAME,
+            keyData.Key,
+            new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+            keyData.IsCtrlDown,
+            keyData.IsAltDown,
+            keyData.IsShiftDown);
     }
     internal static IDisposable Bind()
     {
-        if (!Main.TryParseKeyBinding(Main.Settings.InventorySearch, out _)) return null;
         return Game.Instance.Keyboard.Bind(BIND_NAME, ActivateInventorySearchField);
     }
 
@@ -54,6 +45,16 @@ internal class InventorySearchField
                     inputField.Select();
                 }
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
+    public static class Patches
+    {
+        [HarmonyPostfix]
+        public static void Add(ServiceWindowsVM __instance)
+        {
+            __instance.AddDisposable(Bind());
         }
     }
 }

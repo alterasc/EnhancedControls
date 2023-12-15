@@ -12,29 +12,20 @@ internal static class CollectAllAndClose
 {
     private const string BIND_NAME = "EnhancedControls.CollectAllAndClose";
 
-    internal static void RegisterBinding()
+    internal static void RegisterBinding(KeyBindingData keyBindingData)
     {
-        try
-        {
-            var nextTabBind = new KeyBindingData(Main.Settings.CollectAllAndClose);
-            Game.Instance.Keyboard.RegisterBinding(
-                       BIND_NAME,
-                       nextTabBind.Key,
-                       new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                       nextTabBind.IsCtrlDown,
-                       nextTabBind.IsAltDown,
-                       nextTabBind.IsShiftDown);
-        }
-        catch (ArgumentException ex)
-        {
-            Main.log.Error($"Incorrect keybind format for CollectAllAndClose action: {ex.Message}");
-        }
+        Game.Instance.Keyboard.RegisterBinding(
+                   BIND_NAME,
+                   keyBindingData.Key,
+                   new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+                   keyBindingData.IsCtrlDown,
+                   keyBindingData.IsAltDown,
+                   keyBindingData.IsShiftDown);
+
     }
 
     internal static IDisposable Bind()
     {
-        if (!Main.TryParseKeyBinding(Main.Settings.CollectAllAndClose, out _)) return null;
-
         return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
         {
             LootCollectorVM lootCollectorVM = Game.Instance.RootUiContext.SurfaceVM?.StaticPartVM?.LootContextVM?.LootVM?.Value.LootCollector;
@@ -50,7 +41,7 @@ internal static class CollectAllAndClose
     }
 
     [HarmonyPatch]
-    internal static class BindPatches
+    internal static class Patches
     {
         [HarmonyPatch(typeof(LootCollectorPCView), nameof(LootCollectorPCView.BindViewImplementation))]
         [HarmonyPostfix]

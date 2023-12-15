@@ -1,4 +1,5 @@
-﻿using Kingmaker;
+﻿using HarmonyLib;
+using Kingmaker;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo.Sections.NameAndPortrait;
@@ -15,29 +16,19 @@ internal static class NextCharacter
 {
     private const string BIND_NAME = "EnhancedControls.NextCharacter";
 
-    internal static void RegisterBinding()
+    internal static void RegisterBinding(KeyBindingData keyData)
     {
-        try
-        {
-            var keyData = new KeyBindingData(Main.Settings.NextCharacter);
-            Game.Instance.Keyboard.RegisterBinding(
-                BIND_NAME,
-                keyData.Key,
-                new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                keyData.IsCtrlDown,
-                keyData.IsAltDown,
-                keyData.IsShiftDown);
-        }
-        catch (ArgumentException ex)
-        {
-            Main.log.Error($"Incorrect keybind format for NextCharacter action: {ex.Message}");
-        }
+        Game.Instance.Keyboard.RegisterBinding(
+            BIND_NAME,
+            keyData.Key,
+            new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+            keyData.IsCtrlDown,
+            keyData.IsAltDown,
+            keyData.IsShiftDown);
     }
 
     internal static IDisposable Bind()
     {
-        if (!Main.TryParseKeyBinding(Main.Settings.NextCharacter, out _)) return null;
-
         return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
             {
                 var uiContext = Game.Instance.RootUiContext;
@@ -74,5 +65,15 @@ internal static class NextCharacter
                     }
                 }
             });
+    }
+
+    [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
+    public static class Patches
+    {
+        [HarmonyPostfix]
+        public static void Add(ServiceWindowsVM __instance)
+        {
+            __instance.AddDisposable(Bind());
+        }
     }
 }
