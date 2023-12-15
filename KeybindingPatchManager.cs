@@ -47,6 +47,15 @@ internal static class KeybindingPatchManager
         }
 
         {
+            var prevCharacter = settings.PrevCharacter.GetValue().Binding1;
+            TryRegister(prevCharacter, "PrevCharacter", () =>
+            {
+                PrevCharacter.RegisterBinding(prevCharacter);
+                Main.HarmonyInstance.CreateClassProcessor(typeof(PrevCharacter.Patches)).Patch();
+            });
+        }
+
+        {
             var nextTab = settings.NextTab.GetValue().Binding1;
             TryRegister(nextTab, "NextTab", () =>
             {

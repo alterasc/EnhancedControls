@@ -34,6 +34,12 @@ public class ModSettings
         "Moves selection to the next character.",
         "Tab;;World;false");
 
+    public CustomKeySetting PrevCharacter = new(
+        "prevcharacter",
+        "Previous Character",
+        "Moves selection to the previous character.",
+        "#Tab;;World;false");
+
     public CustomKeySetting NextTab = new(
         "nexttab",
         "Next Menu Tab",
@@ -63,6 +69,7 @@ public class ModSettings
         InventorySearch.BuildUIAndLink();
         NextTab.BuildUIAndLink();
         NextCharacter.BuildUIAndLink();
+        PrevCharacter.BuildUIAndLink();
     }
 
     private static readonly ModSettings instance = new();
@@ -91,6 +98,7 @@ public static class SettingsUIPatches
                 ModSettings.Instance.SeparateEndTurn.UiSettingEntity,
                 ModSettings.Instance.CollectAll.UiSettingEntity,
                 ModSettings.Instance.NextCharacter.UiSettingEntity,
+                ModSettings.Instance.PrevCharacter.UiSettingEntity,
                 ModSettings.Instance.NextTab.UiSettingEntity,
                 ModSettings.Instance.InventorySearch.UiSettingEntity
                 ));
