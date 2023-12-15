@@ -20,7 +20,7 @@ internal static class NextTab
         Game.Instance.Keyboard.RegisterBinding(
                    BIND_NAME,
                    keyBindingData.Key,
-                   new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+                   new GameModeType[] { GameModeType.Default, GameModeType.Pause, GameModeType.StarSystem },
                    keyBindingData.IsCtrlDown,
                    keyBindingData.IsAltDown,
                    keyBindingData.IsShiftDown);
@@ -32,9 +32,9 @@ internal static class NextTab
         {
             var uiContext = Game.Instance.RootUiContext;
             var currentWindow = Game.Instance.RootUiContext.CurrentServiceWindow;
+            var serviceWindowsVM = uiContext.IsSpace ? uiContext.SpaceVM.StaticPartVM.ServiceWindowsVM : uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
             if (currentWindow == ServiceWindowsType.CharacterInfo)
             {
-                var serviceWindowsVM = uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
                 var characterInfoVM = serviceWindowsVM.CharacterInfoVM.Value;
                 var pageType = characterInfoVM.m_CurrentPage.Value.PageType;
                 CharInfoPageType nextTab = pageType switch
@@ -52,7 +52,6 @@ internal static class NextTab
             }
             else if (currentWindow == ServiceWindowsType.Inventory)
             {
-                var serviceWindowsVM = uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
                 var inventoryVM = serviceWindowsVM.InventoryVM.Value;
                 var inventoryStashVM = inventoryVM.StashVM;
                 var itemsFilterVm = inventoryStashVM.ItemsFilter;

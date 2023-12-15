@@ -36,14 +36,14 @@ public class ModSettings
 
     public CustomKeySetting NextTab = new(
         "nexttab",
-        "Next Tab",
+        "Next Menu Tab",
         "In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)\r\nIn inventory moves inventory filter (All -> Weapons -> Armor -> ...)",
         "%Tab;;World;false");
 
 
     public CustomKeySetting InventorySearch = new(
         "inventorysearch",
-        "Search inventory",
+        "Search Inventory",
         "Activates search input field when you're in inventory menu",
         "%F;;World;false");
 

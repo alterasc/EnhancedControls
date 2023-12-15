@@ -21,7 +21,7 @@ internal static class NextCharacter
         Game.Instance.Keyboard.RegisterBinding(
             BIND_NAME,
             keyData.Key,
-            new GameModeType[] { GameModeType.Default, GameModeType.Pause },
+            new GameModeType[] { GameModeType.Default, GameModeType.Pause, GameModeType.StarSystem },
             keyData.IsCtrlDown,
             keyData.IsAltDown,
             keyData.IsShiftDown);
@@ -33,17 +33,16 @@ internal static class NextCharacter
             {
                 var uiContext = Game.Instance.RootUiContext;
                 var currentWindow = Game.Instance.RootUiContext.CurrentServiceWindow;
-
                 if (currentWindow == ServiceWindowsType.CharacterInfo)
                 {
-                    var serviceWindowsVM = uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
+                    var serviceWindowsVM = uiContext.IsSpace ? uiContext.SpaceVM.StaticPartVM.ServiceWindowsVM : uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
                     var characterInfoVM = serviceWindowsVM.CharacterInfoVM.Value;
                     var nameAndPortraitVM = (CharInfoNameAndPortraitVM)characterInfoVM.ComponentVMs[CharInfoComponentType.NameAndPortrait].Value;
                     nameAndPortraitVM.SelectNextCharacter();
                 }
                 else if (currentWindow == ServiceWindowsType.Inventory)
                 {
-                    var serviceWindowsVM = uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
+                    var serviceWindowsVM = uiContext.IsSpace ? uiContext.SpaceVM.StaticPartVM.ServiceWindowsVM : uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
                     var inventoryVM = serviceWindowsVM.InventoryVM.Value;
 
                     var nameAndPortraitVM = inventoryVM.NameAndPortraitVM;
