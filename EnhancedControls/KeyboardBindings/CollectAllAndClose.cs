@@ -17,7 +17,7 @@ internal static class CollectAllAndClose
         Game.Instance.Keyboard.RegisterBinding(
             BIND_NAME,
             keyData,
-            GameModesGroup.World,
+            GameModesGroup.WorldFullscreenUI,
             false);
     }
 
