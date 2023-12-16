@@ -3,6 +3,7 @@ using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
+using Kingmaker.UI.Common;
 using Kingmaker.UI.MVVM.View.SpaceCombat.PC;
 using System;
 using System.Collections.Generic;
@@ -28,15 +29,7 @@ internal static class SeparateEndTurn
     {
         return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
         {
-            if (Game.Instance.TurnController.IsPreparationTurn)
-            {
-                var combatVM = Game.Instance.RootUiContext.SurfaceVM.StaticPartVM.SurfaceHUDVM.CombatStartWindowVM;
-                if (combatVM.HasValue && combatVM.Value.CanStartCombat.Value)
-                {
-                    combatVM.Value.StartBattle();
-                }
-            }
-            else
+            if (!UIUtility.IsGlobalMap())
             {
                 Game.Instance.EndTurnBind();
             }

@@ -19,7 +19,7 @@ public class ModSettings
     public CustomKeySetting SeparateEndTurn = new(
         "separateendturn",
         "Separate End Turn",
-        "If this button is bound, then it removes End Turn functionality from Pause button (Space).\r\nAlso this button can end combat preparation (placement) phase and start the battle.",
+        "If this button is bound, then it removes End Turn functionality from Pause button (Space) and assigns this to this button.",
         "%Space;;World;false");
 
     public CustomKeySetting CollectAll = new(
