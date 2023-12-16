@@ -4,8 +4,8 @@ using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo.Sections.NameAndPortrait;
 using Kingmaker.EntitySystem.Entities;
-using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
+using Kingmaker.UI.InputSystems.Enums;
 using Kingmaker.UI.Sound;
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,9 @@ internal static class NextCharacter
     {
         Game.Instance.Keyboard.RegisterBinding(
             BIND_NAME,
-            keyData.Key,
-            new GameModeType[] { GameModeType.Default, GameModeType.Pause, GameModeType.StarSystem },
-            keyData.IsCtrlDown,
-            keyData.IsAltDown,
-            keyData.IsShiftDown);
+            keyData,
+            GameModesGroup.WorldFullscreenUI,
+            false);
     }
 
     internal static IDisposable Bind()
@@ -66,9 +64,13 @@ internal static class NextCharacter
             });
     }
 
-    [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
+    [HarmonyPatch]
     public static class Patches
     {
+        /// <summary>
+        /// Binds key after other service window keys are bound
+        /// </summary>
+        [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
         [HarmonyPostfix]
         public static void Add(ServiceWindowsVM __instance)
         {

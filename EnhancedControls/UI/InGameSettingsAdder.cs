@@ -82,8 +82,8 @@ public static class SettingsUIPatches
     /// <summary>
     /// Adds setting group to Controls section of game settings
     /// </summary>
-    [HarmonyPostfix]
     [HarmonyPatch(typeof(UISettingsManager), nameof(UISettingsManager.Initialize))]
+    [HarmonyPostfix]
     static void AddSettingsGroup()
     {
         if (Game.Instance.UISettingsManager.m_ControlSettingsList.Any(group => group.name?.StartsWith(ModSettings.PREFIX) ?? false))
@@ -111,11 +111,8 @@ public static class SettingsUIPatches
     /// This is because original Owlcat validation is too strict and
     /// prevents usage of same key even if executed actions between keys do not conflict
     /// </summary>
-    /// <param name="__result"></param>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    [HarmonyPrefix]
     [HarmonyPatch(typeof(KeyboardAccess), nameof(KeyboardAccess.CanBeRegistered))]
+    [HarmonyPrefix]
     public static bool CanRegisterAnything(ref bool __result, string name)
     {
         if (name != null && name.StartsWith(ModSettings.PREFIX))

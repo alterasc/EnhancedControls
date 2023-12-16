@@ -1,10 +1,12 @@
 ﻿using HarmonyLib;
 using Kingmaker;
+using Kingmaker.Code.UI.MVVM.View.Space;
 using Kingmaker.Code.UI.MVVM.View.Surface;
 using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
+using Kingmaker.UI.InputSystems.Enums;
 
 namespace EnhancedControls.KeyboardBindings;
 
@@ -16,11 +18,9 @@ internal class HighlightToggle
     {
         Game.Instance.Keyboard.RegisterBinding(
             BIND_NAME,
-            keyData.Key,
-            new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-            keyData.IsCtrlDown,
-            keyData.IsAltDown,
-            keyData.IsShiftDown);
+            keyData,
+            GameModesGroup.World,
+            false);
     }
 
     [HarmonyPatch]
@@ -35,9 +35,11 @@ internal class HighlightToggle
             InteractionHighlightController.Instance.Highlight(_highlightState);
         }
 
-        /**
-         * After enabling binds action and restores highlight state to previously recorded
-         */
+        /// <summary>
+        /// After enabling InteractionHighlightController binds action 
+        /// and restores highlight state to previously recorded
+        /// </summary>
+        /// <param name="__instance"></param>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(InteractionHighlightController), nameof(InteractionHighlightController.OnEnable))]
         private static void AfterOnEnable(InteractionHighlightController __instance)
@@ -46,19 +48,20 @@ internal class HighlightToggle
             __instance.Highlight(_highlightState);
         }
 
-        /**
-         * Unbinds key on disabling
-         */
+        /// <summary>
+        /// Unbinds key on disabling InteractionHighlightController
+        /// </summary>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(InteractionHighlightController), nameof(InteractionHighlightController.OnDisable))]
-        private static void AfterOnDisable(InteractionHighlightController __instance)
+        private static void AfterOnDisable()
         {
             Game.Instance.Keyboard.Unbind(BIND_NAME, ToggleHighlight);
         }
 
-        /**
-         * Disables hightlight in cutscenes and dialogues
-         */
+        /// <summary>
+        /// Disables hightlight in cutscenes and dialogues
+        /// </summary>
+        /// <param name="gameMode"></param>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(SurfaceHUDPCView), nameof(SurfaceHUDPCView.OnGameModeStart))]
         private static void DisableOnDialogAndCutscene(GameModeType gameMode)
@@ -74,10 +77,10 @@ internal class HighlightToggle
             }
         }
 
-        /**
-         * Disables highlight on surface combat start, because in surface combat you can't perform actions
-         * while highlighting is up
-         */
+        /// <summary>
+        /// Disables highlight on surface combat start, because in surface combat you can't perform actions
+        /// while highlighting is up
+        /// </summary>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(SurfaceBaseView), nameof(SurfaceBaseView.ActivateCombatInputLayer))]
         private static void DisableOnCombatStart()
@@ -87,9 +90,9 @@ internal class HighlightToggle
             instance.Highlight(false);
         }
 
-        /**
-         * Restore highlight toggle state after combat end
-         */
+        /// <summary>
+        /// Restore highlight toggle state after surface combat end
+        /// </summary>
         [HarmonyPostfix]
         [HarmonyPatch(typeof(SurfaceBaseView), nameof(SurfaceBaseView.DeactivateCombatInputLayer))]
         private static void RestoreStateOnCombatEnd()
@@ -97,6 +100,19 @@ internal class HighlightToggle
             InteractionHighlightController instance = InteractionHighlightController.Instance;
             if (instance == null) return;
             instance.Highlight(_highlightState);
+        }
+
+        /// <summary>
+        /// Disables highlight on space combat start, because in space combat you can't perform actions
+        /// while highlighting is up
+        /// </summary>
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SpaceBaseView), nameof(SpaceBaseView.ActivateCombatInputLayer))]
+        private static void DisableOnSpaceCombatStart()
+        {
+            InteractionHighlightController instance = InteractionHighlightController.Instance;
+            if (instance == null) return;
+            instance.Highlight(false);
         }
     }
 }

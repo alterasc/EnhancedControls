@@ -32,10 +32,12 @@ static class Main
         return true;
     }
 
+#if DEBUG
     static bool OnUnload(UnityModManager.ModEntry modEntry)
     {
         return true;
     }
+#endif
 
     static void OnGUI(UnityModManager.ModEntry modEntry)
     {

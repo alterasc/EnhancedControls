@@ -2,8 +2,8 @@
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.Loot.PC;
 using Kingmaker.Code.UI.MVVM.VM.Loot;
-using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
+using Kingmaker.UI.InputSystems.Enums;
 using System;
 
 namespace EnhancedControls.KeyboardBindings;
@@ -12,16 +12,13 @@ internal static class CollectAllAndClose
 {
     private const string BIND_NAME = "EnhancedControls.CollectAllAndClose";
 
-    internal static void RegisterBinding(KeyBindingData keyBindingData)
+    internal static void RegisterBinding(KeyBindingData keyData)
     {
         Game.Instance.Keyboard.RegisterBinding(
-                   BIND_NAME,
-                   keyBindingData.Key,
-                   new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                   keyBindingData.IsCtrlDown,
-                   keyBindingData.IsAltDown,
-                   keyBindingData.IsShiftDown);
-
+            BIND_NAME,
+            keyData,
+            GameModesGroup.World,
+            false);
     }
 
     internal static IDisposable Bind()
@@ -43,6 +40,9 @@ internal static class CollectAllAndClose
     [HarmonyPatch]
     internal static class Patches
     {
+        /// <summary>
+        /// Binds button on creation of loot collector view
+        /// </summary>
         [HarmonyPatch(typeof(LootCollectorPCView), nameof(LootCollectorPCView.BindViewImplementation))]
         [HarmonyPostfix]
         internal static void Add(LootCollectorPCView __instance)

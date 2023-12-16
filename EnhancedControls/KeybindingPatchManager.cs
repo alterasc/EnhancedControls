@@ -7,8 +7,12 @@ namespace EnhancedControls;
 
 internal static class KeybindingPatchManager
 {
+    private static bool Initialized = false;
     internal static void Run()
     {
+        if (Initialized) return;
+        Initialized = true;
+
         var settings = ModSettings.Instance;
         {
             var highlightToggle = settings.HighlightToggle.GetValue().Binding1;

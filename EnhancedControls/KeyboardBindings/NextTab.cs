@@ -2,11 +2,11 @@
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
-using Kingmaker.GameModes;
 using Kingmaker.PubSubSystem;
 using Kingmaker.PubSubSystem.Core;
 using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Common;
+using Kingmaker.UI.InputSystems.Enums;
 using System;
 
 namespace EnhancedControls.KeyboardBindings;
@@ -15,15 +15,13 @@ internal static class NextTab
 {
     private const string BIND_NAME = "EnhancedControls.NextTab";
 
-    internal static void RegisterBinding(KeyBindingData keyBindingData)
+    internal static void RegisterBinding(KeyBindingData keyData)
     {
         Game.Instance.Keyboard.RegisterBinding(
-                   BIND_NAME,
-                   keyBindingData.Key,
-                   new GameModeType[] { GameModeType.Default, GameModeType.Pause, GameModeType.StarSystem },
-                   keyBindingData.IsCtrlDown,
-                   keyBindingData.IsAltDown,
-                   keyBindingData.IsShiftDown);
+            BIND_NAME,
+            keyData,
+            GameModesGroup.WorldFullscreenUI,
+            false);
     }
 
     internal static IDisposable Bind()
@@ -73,9 +71,13 @@ internal static class NextTab
         });
     }
 
-    [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
+    [HarmonyPatch]
     public static class Patches
     {
+        /// <summary>
+        /// Binds key after other service window keys are bound
+        /// </summary>
+        [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
         [HarmonyPostfix]
         public static void Add(ServiceWindowsVM __instance)
         {

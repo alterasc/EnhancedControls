@@ -1,9 +1,9 @@
 ﻿using HarmonyLib;
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
-using Kingmaker.GameModes;
 using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Common;
+using Kingmaker.UI.InputSystems.Enums;
 using Kingmaker.UI.MVVM.View.SpaceCombat.PC;
 using System;
 using System.Collections.Generic;
@@ -14,15 +14,13 @@ internal static class SeparateEndTurn
 {
     private const string BIND_NAME = "EnhancedControls.SeparateEndTurn";
 
-    internal static void RegisterBinding(KeyBindingData nextTabBind)
+    internal static void RegisterBinding(KeyBindingData keyBindingData)
     {
         Game.Instance.Keyboard.RegisterBinding(
-                   BIND_NAME,
-                   nextTabBind.Key,
-                   new GameModeType[] { GameModeType.Default, GameModeType.Pause },
-                   nextTabBind.IsCtrlDown,
-                   nextTabBind.IsAltDown,
-                   nextTabBind.IsShiftDown);
+            BIND_NAME,
+            keyBindingData,
+            GameModesGroup.World,
+            false);
     }
 
     internal static IDisposable Bind()
@@ -39,6 +37,10 @@ internal static class SeparateEndTurn
     [HarmonyPatch]
     internal static class Patches
     {
+        /// <summary>
+        /// Binds new end turn key on start of surface combat
+        /// </summary>
+        /// <param name="__instance"></param>
         [HarmonyPatch(typeof(SurfaceHUDPCView), nameof(SurfaceHUDPCView.BindViewImplementation))]
         [HarmonyPostfix]
         internal static void SurfaceCombatBind(SurfaceHUDPCView __instance)
@@ -46,6 +48,10 @@ internal static class SeparateEndTurn
             __instance.AddDisposable(Bind());
         }
 
+        /// <summary>
+        /// Binds new end turn key on start of space combat
+        /// </summary>
+        /// <param name="__instance"></param>
         [HarmonyPatch(typeof(SpaceCombatServicePanelPCView), nameof(SpaceCombatServicePanelPCView.BindViewImplementation))]
         [HarmonyPostfix]
         public static void SpaceCombatBind(SpaceCombatServicePanelPCView __instance)
@@ -53,7 +59,10 @@ internal static class SeparateEndTurn
             __instance.AddDisposable(Bind());
         }
 
-
+        /// <summary>
+        /// Removes call to EndTurnBind from PauseAndTryEndTurnBind
+        /// preventing Pause button from ending turn
+        /// </summary>
         [HarmonyPatch(typeof(Game), nameof(Game.PauseAndTryEndTurnBind))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> RemoveEndTurnFromPauseButton(IEnumerable<CodeInstruction> instructions)

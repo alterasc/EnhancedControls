@@ -4,7 +4,7 @@ You can disable or rebind any part of the mod that you want but by default this 
 
 
 [h3]Separate End Turn button - default: Ctrl+Space[/h3]
-If this button is bound, then it removes End Turn functionality from Space button.
+If this button is bound, then it moves End Turn/Start Battle functionality from Pause button to new button.
 Do NOT use in conjuction with Toybox "Disable end turn HotKey" option. Choose one or another.
 
 [h3]Separate Toggle Highlight Objects - default: Ctrl+R[/h3]
@@ -15,7 +15,7 @@ Do NOT use in conjuction with Toybox "Object Highlight Toggle Mode" option. Choo
 Works in character menu and inventory and on surface.
 Moves selection to the next character.
 Conflicts with default "Highlight objects" binding. So unbind or change one of the two.
-My suggestion is to assign normal highlight to "R" (because my default is Ctrl+R)
+My suggestion is to assign normal highlight to "R" (because my default for toggle is Ctrl+R)
 
 [h3]Previous character - default: Shift+Tab[/h3]
 Works in character menu and inventory and on surface.
