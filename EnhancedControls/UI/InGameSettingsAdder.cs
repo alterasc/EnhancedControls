@@ -46,6 +46,11 @@ public class ModSettings
         "In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)\r\nIn inventory moves inventory filter (All -> Weapons -> Armor -> ...)",
         "%Tab;;World;false");
 
+    public CustomKeySetting PrevTab = new(
+        "prevtab",
+        "Previous Menu Tab",
+        "In character menu moves selection to previous page tab  (so Archetypes -> Features -> Summary ->...)\r\nIn inventory moves inventory filter (Armor -> Weapons -> All -> ...)",
+        "%#Tab;;World;false");
 
     public CustomKeySetting InventorySearch = new(
         "inventorysearch",
@@ -68,6 +73,7 @@ public class ModSettings
         CollectAll.BuildUIAndLink();
         InventorySearch.BuildUIAndLink();
         NextTab.BuildUIAndLink();
+        PrevTab.BuildUIAndLink();
         NextCharacter.BuildUIAndLink();
         PrevCharacter.BuildUIAndLink();
     }
@@ -100,6 +106,7 @@ public static class SettingsUIPatches
                 ModSettings.Instance.NextCharacter.UiSettingEntity,
                 ModSettings.Instance.PrevCharacter.UiSettingEntity,
                 ModSettings.Instance.NextTab.UiSettingEntity,
+                ModSettings.Instance.PrevTab.UiSettingEntity,
                 ModSettings.Instance.InventorySearch.UiSettingEntity
                 ));
 

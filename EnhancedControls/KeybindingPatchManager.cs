@@ -69,6 +69,15 @@ internal static class KeybindingPatchManager
         }
 
         {
+            var prevTab = settings.PrevTab.GetValue().Binding1;
+            TryRegister(prevTab, "PrevTab", () =>
+            {
+                PrevTab.RegisterBinding(prevTab);
+                Main.HarmonyInstance.CreateClassProcessor(typeof(PrevTab.Patches)).Patch();
+            });
+        }
+
+        {
             var inventorySearch = settings.InventorySearch.GetValue().Binding1;
             TryRegister(inventorySearch, "InventorySearch", () =>
             {

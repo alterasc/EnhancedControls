@@ -22,10 +22,15 @@ Works in character menu and inventory and on surface.
 Moves selection to the previous character.
 Conflicts with default steam overlay. So unbind or change if you're on steam.
 
-[h3]Next tab - default: Ctrl+Tab[/h3]
+[h3]Next menu tab - default: Ctrl+Tab[/h3]
 Works in character menu and inventory.
 In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)
 In inventory moves inventory filter (All -> Weapons -> Armor -> ...)
+
+[h3]Previous menu tab - default: Ctrl+Shift+Tab[/h3]
+Works in character menu and inventory.
+In character menu moves selection to previous page tab  (so Archetypes -> Features -> Summary ->...)
+In inventory moves inventory filter (Armor -> Weapons -> All -> ...)
 
 [h3]Inventory Search - default: Ctrl-F[/h3]
 When you're in inventory, this activates inventory search field.
