@@ -1,4 +1,5 @@
 ﻿using EnhancedControls.KeyboardBindings;
+using EnhancedControls.Tweaks;
 using EnhancedControls.UI;
 using Kingmaker.Settings.Entities;
 using System;
@@ -85,6 +86,15 @@ internal static class KeybindingPatchManager
                 Main.HarmonyInstance.CreateClassProcessor(typeof(InventorySearchField.Patches)).Patch();
             });
         }
+
+
+        {
+            var takenTalentLast = settings.TakenFeaturesLast.GetValue();
+            TryPatch(takenTalentLast, "TakenFeaturesLast", () =>
+            {
+                Main.HarmonyInstance.CreateClassProcessor(typeof(TakenFeaturesLast.Patches)).Patch();
+            });
+        }
     }
 
     private static void TryRegister(KeyBindingData binding, string name, Action action)
@@ -104,6 +114,26 @@ internal static class KeybindingPatchManager
         else
         {
             Main.log.Log($"{name} unbound, registration skipped");
+        }
+    }
+
+    private static void TryPatch(bool value, string name, Action action)
+    {
+        Main.log.Log($"{name} value: {value}");
+        if (value)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                Main.log.Error($"{name} patch exception: {ex.Message}");
+            }
+        }
+        else
+        {
+            Main.log.Log($"{name} at default value, patch not applied");
         }
     }
 }

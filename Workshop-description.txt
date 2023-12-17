@@ -1,7 +1,8 @@
-[h2]Adds couple of new keybindings.[/h2] 
+[h1]Adds new keybindings and UI-related settings.[/h1] 
 
 You can disable or rebind any part of the mod that you want but by default this conflicts with default control scheme, so read what you're getting into. 
 
+[h2]New hotkeys[/h2]
 
 [h3]Separate End Turn button - default: Ctrl+Space[/h3]
 If this button is bound, then it moves End Turn/Start Battle functionality from Pause button to new button.
@@ -38,6 +39,10 @@ When you're in inventory, this activates inventory search field.
 [h3]Collect All and Close - default: F[/h3]
 In loot window collects all and closes loot window
 
+[h2]New settings[/h2]
+
+[h3]Place taken talents last - default: On[/h3]
+Places already taken talents/abilities/etc at the bottom of selection list.
 
 [h2]Configuration:[/h2]
 Through native game settings.
@@ -46,3 +51,6 @@ To disable setting, just unbind the key.
 Note - at the moment it does not take into account alternative keybind, only main one.
 
 [b]Changes are appled only after restart.[/b]
+
+[url=https://github.com/cabarius/ToyBox/wiki/Installing-Toybox-for-RT-(Steam-Workshop-Edition)]Installation guide[/url]
+This is written by ToyBox team for ToyBox, but same principle applies to this mod. Only mod id is different, and name your folder not '0Toybox0' but 'EnhancedControls'

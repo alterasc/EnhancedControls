@@ -58,7 +58,11 @@ public class ModSettings
         "Activates search input field when you're in inventory menu",
         "%F;;World;false");
 
-
+    public CustomToggleSetting TakenFeaturesLast = new(
+        "takenfeatureslast",
+        "Place taken talents last",
+        "Places already taken talents/abilities/etc at the bottom of selection list",
+        true);
 
 
     private bool Initialized = false;
@@ -76,6 +80,7 @@ public class ModSettings
         PrevTab.BuildUIAndLink();
         NextCharacter.BuildUIAndLink();
         PrevCharacter.BuildUIAndLink();
+        TakenFeaturesLast.BuildUIAndLink();
     }
 
     private static readonly ModSettings instance = new();
@@ -107,7 +112,8 @@ public static class SettingsUIPatches
                 ModSettings.Instance.PrevCharacter.UiSettingEntity,
                 ModSettings.Instance.NextTab.UiSettingEntity,
                 ModSettings.Instance.PrevTab.UiSettingEntity,
-                ModSettings.Instance.InventorySearch.UiSettingEntity
+                ModSettings.Instance.InventorySearch.UiSettingEntity,
+                ModSettings.Instance.TakenFeaturesLast.UiSettingEntity
                 ));
 
         KeybindingPatchManager.Run();
