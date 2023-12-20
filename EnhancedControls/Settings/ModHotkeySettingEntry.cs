@@ -4,7 +4,6 @@ using Kingmaker.Settings;
 using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Models.SettingsUI.SettingAssets;
 using System;
-using static Kingmaker.Items.WeaponStatsHelper;
 
 namespace EnhancedControls.Settings;
 

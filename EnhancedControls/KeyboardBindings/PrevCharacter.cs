@@ -1,12 +1,10 @@
-﻿using EnhancedControls.Settings;
+﻿using EnhancedControls.Common;
+using EnhancedControls.Settings;
 using HarmonyLib;
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo.Sections.NameAndPortrait;
-using Kingmaker.EntitySystem.Entities;
-using Kingmaker.UI.Sound;
-using System.Collections.Generic;
 
 namespace EnhancedControls.KeyboardBindings;
 
@@ -56,18 +54,7 @@ public class PrevCharacter : ModHotkeySettingEntry
             }
             else if (uiContext.m_FullScreenUIType == Kingmaker.UI.Models.FullScreenUIType.Unknown)
             {
-                List<BaseUnitEntity> actualGroup = Game.Instance.SelectionCharacter.ActualGroup;
-                var curUnit = Game.Instance.SelectionCharacter.SelectedUnit;
-                int num = (actualGroup.IndexOf(curUnit.Value) - 1) % actualGroup.Count;
-                if (num < 0)
-                {
-                    num += actualGroup.Count;
-                }
-                Game.Instance.SelectionCharacter.SetSelected(actualGroup[num], false, false);
-                if (actualGroup.Count == 1)
-                {
-                    UISounds.Instance.Sounds.Combat.CombatGridCantPerformActionClick.Play(null);
-                }
+                CharacterSelector.SelectPrevCharacter();
             }
         }
     }
