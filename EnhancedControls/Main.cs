@@ -1,5 +1,5 @@
 ﻿using EnhancedControls.Localization;
-using EnhancedControls.UI;
+using EnhancedControls.Settings;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;

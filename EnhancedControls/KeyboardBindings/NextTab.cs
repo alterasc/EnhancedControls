@@ -1,32 +1,40 @@
-﻿using HarmonyLib;
+﻿using EnhancedControls.Settings;
+using HarmonyLib;
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.PubSubSystem;
 using Kingmaker.PubSubSystem.Core;
-using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Common;
-using Kingmaker.UI.InputSystems.Enums;
-using System;
 
 namespace EnhancedControls.KeyboardBindings;
 
-internal static class NextTab
+public class NextTab : ModHotkeySettingEntry
 {
-    private const string BIND_NAME = "EnhancedControls.NextTab";
+    private const string _key = "nexttab";
+    private const string _title = "Next Menu Tab";
+    private const string _tooltip = "In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)\r\nIn inventory moves inventory filter (All -> Weapons -> Armor -> ...)";
+    private const string _defaultValue = "%Tab;;WorldFullscreenUI;false";
+    private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
-    internal static void RegisterBinding(KeyBindingData keyData)
-    {
-        Game.Instance.Keyboard.RegisterBinding(
-            BIND_NAME,
-            keyData,
-            GameModesGroup.WorldFullscreenUI,
-            false);
-    }
+    public NextTab() : base(_key, _title, _tooltip, _defaultValue) { }
 
-    internal static IDisposable Bind()
+    public override SettingStatus TryEnable() => TryEnableAndPatch(typeof(Patches));
+
+    [HarmonyPatch]
+    private static class Patches
     {
-        return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
+        /// <summary>
+        /// Binds key after other service window keys are bound
+        /// </summary>
+        [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
+        [HarmonyPostfix]
+        private static void Add(ServiceWindowsVM __instance)
+        {
+            __instance.AddDisposable(Game.Instance.Keyboard.Bind(BIND_NAME, SelectNexTab));
+        }
+
+        private static void SelectNexTab()
         {
             var uiContext = Game.Instance.RootUiContext;
             var currentWindow = Game.Instance.RootUiContext.CurrentServiceWindow;
@@ -68,20 +76,6 @@ internal static class NextTab
                 };
                 itemsFilterVm.SetCurrentFilter(nextTab);
             }
-        });
-    }
-
-    [HarmonyPatch]
-    public static class Patches
-    {
-        /// <summary>
-        /// Binds key after other service window keys are bound
-        /// </summary>
-        [HarmonyPatch(typeof(ServiceWindowsVM), nameof(ServiceWindowsVM.BindKeys))]
-        [HarmonyPostfix]
-        public static void Add(ServiceWindowsVM __instance)
-        {
-            __instance.AddDisposable(Bind());
         }
     }
 }

@@ -1,41 +1,27 @@
-﻿using HarmonyLib;
+﻿using EnhancedControls.Settings;
+using HarmonyLib;
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
-using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Common;
-using Kingmaker.UI.InputSystems.Enums;
 using Kingmaker.UI.MVVM.View.SpaceCombat.PC;
-using System;
 using System.Collections.Generic;
 
 namespace EnhancedControls.KeyboardBindings;
 
-internal static class SeparateEndTurn
+public class SeparateEndTurn : ModHotkeySettingEntry
 {
-    private const string BIND_NAME = "EnhancedControls.SeparateEndTurn";
+    private const string _key = "separateendturn";
+    private const string _title = "Separate End Turn";
+    private const string _tooltip = "If this button is bound, then it removes End Turn functionality from Pause button (Space) and assigns this to this button";
+    private const string _defaultValue = "%Space;;World;false";
+    private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
-    internal static void RegisterBinding(KeyBindingData keyBindingData)
-    {
-        Game.Instance.Keyboard.RegisterBinding(
-            BIND_NAME,
-            keyBindingData,
-            GameModesGroup.World,
-            false);
-    }
+    public SeparateEndTurn() : base(_key, _title, _tooltip, _defaultValue) { }
 
-    internal static IDisposable Bind()
-    {
-        return Game.Instance.Keyboard.Bind(BIND_NAME, delegate
-        {
-            if (!UIUtility.IsGlobalMap())
-            {
-                Game.Instance.EndTurnBind();
-            }
-        });
-    }
+    public override SettingStatus TryEnable() => TryEnableAndPatch(typeof(Patches));
 
     [HarmonyPatch]
-    internal static class Patches
+    private static class Patches
     {
         /// <summary>
         /// Binds new end turn key on start of surface combat
@@ -43,9 +29,9 @@ internal static class SeparateEndTurn
         /// <param name="__instance"></param>
         [HarmonyPatch(typeof(SurfaceHUDPCView), nameof(SurfaceHUDPCView.BindViewImplementation))]
         [HarmonyPostfix]
-        internal static void SurfaceCombatBind(SurfaceHUDPCView __instance)
+        private static void SurfaceCombatBind(SurfaceHUDPCView __instance)
         {
-            __instance.AddDisposable(Bind());
+            __instance.AddDisposable(Game.Instance.Keyboard.Bind(BIND_NAME, EndTurn));
         }
 
         /// <summary>
@@ -54,9 +40,9 @@ internal static class SeparateEndTurn
         /// <param name="__instance"></param>
         [HarmonyPatch(typeof(SpaceCombatServicePanelPCView), nameof(SpaceCombatServicePanelPCView.BindViewImplementation))]
         [HarmonyPostfix]
-        public static void SpaceCombatBind(SpaceCombatServicePanelPCView __instance)
+        private static void SpaceCombatBind(SpaceCombatServicePanelPCView __instance)
         {
-            __instance.AddDisposable(Bind());
+            __instance.AddDisposable(Game.Instance.Keyboard.Bind(BIND_NAME, EndTurn));
         }
 
         /// <summary>
@@ -79,6 +65,14 @@ internal static class SeparateEndTurn
                 return original;
             }
             return newInstructions;
+        }
+
+        private static void EndTurn()
+        {
+            if (!UIUtility.IsGlobalMap())
+            {
+                Game.Instance.EndTurnBind();
+            }
         }
     }
 }

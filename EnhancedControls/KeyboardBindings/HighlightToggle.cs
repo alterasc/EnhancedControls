@@ -1,30 +1,28 @@
-﻿using HarmonyLib;
+﻿using EnhancedControls.Settings;
+using HarmonyLib;
 using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.Space;
 using Kingmaker.Code.UI.MVVM.View.Surface;
 using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
-using Kingmaker.Settings.Entities;
-using Kingmaker.UI.InputSystems.Enums;
 
 namespace EnhancedControls.KeyboardBindings;
 
-internal class HighlightToggle
+public class HighlightToggle : ModHotkeySettingEntry
 {
-    private const string BIND_NAME = "EnhancedControls.HighlightToggle";
+    private const string _key = "highlighttoggle";
+    private const string _title = "Toggle Highlight Objects";
+    private const string _tooltip = "Toggles object highlighting.";
+    private const string _defaultValue = "%R;;World;false";
+    private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
-    internal static void RegisterBinding(KeyBindingData keyData)
-    {
-        Game.Instance.Keyboard.RegisterBinding(
-            BIND_NAME,
-            keyData,
-            GameModesGroup.World,
-            false);
-    }
+    public HighlightToggle() : base(_key, _title, _tooltip, _defaultValue) { }
+
+    public override SettingStatus TryEnable() => TryEnableAndPatch(typeof(Patches));
 
     [HarmonyPatch]
-    internal static class Patches
+    private static class Patches
     {
         private static bool _highlightState = false;
 
