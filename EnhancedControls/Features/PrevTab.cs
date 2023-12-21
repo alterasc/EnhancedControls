@@ -14,7 +14,7 @@ public class PrevTab : ModHotkeySettingEntry
     private const string _key = "prevtab";
     private const string _title = "Previous Menu Tab";
     private const string _tooltip = "In character menu moves selection to previous page tab  (so Archetypes -> Features -> Summary ->...)\r\nIn inventory moves inventory filter (Armor -> Weapons -> All -> ...)";
-    private const string _defaultValue = "%#Tab;;WorldFullscreenUI;false";
+    private const string _defaultValue = "#Q;;WorldFullscreenUI;false";
     private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
     public PrevTab() : base(_key, _title, _tooltip, _defaultValue) { }

@@ -14,7 +14,7 @@ public class NextTab : ModHotkeySettingEntry
     private const string _key = "nexttab";
     private const string _title = "Next Menu Tab";
     private const string _tooltip = "In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)\r\nIn inventory moves inventory filter (All -> Weapons -> Armor -> ...)";
-    private const string _defaultValue = "%Tab;;WorldFullscreenUI;false";
+    private const string _defaultValue = "#E;;WorldFullscreenUI;false";
     private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
     public NextTab() : base(_key, _title, _tooltip, _defaultValue) { }

@@ -13,7 +13,7 @@ public class NextCharacter : ModHotkeySettingEntry
     private const string _key = "nextcharacter";
     private const string _title = "Next Character";
     private const string _tooltip = "Moves selection to the next character.";
-    private const string _defaultValue = "Tab;;WorldFullscreenUI;false";
+    private const string _defaultValue = "#D;;WorldFullscreenUI;false";
     private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
     public NextCharacter() : base(_key, _title, _tooltip, _defaultValue) { }

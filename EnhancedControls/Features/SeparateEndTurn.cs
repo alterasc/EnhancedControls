@@ -13,7 +13,7 @@ public class SeparateEndTurn : ModHotkeySettingEntry
     private const string _key = "separateendturn";
     private const string _title = "Separate End Turn";
     private const string _tooltip = "If this button is bound, then it removes End Turn functionality from Pause button (Space) and assigns this to this button";
-    private const string _defaultValue = "%Space;;World;false";
+    private const string _defaultValue = ";;World;false";
     private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
     public SeparateEndTurn() : base(_key, _title, _tooltip, _defaultValue) { }

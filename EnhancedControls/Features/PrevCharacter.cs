@@ -13,7 +13,7 @@ public class PrevCharacter : ModHotkeySettingEntry
     private const string _key = "prevcharacter";
     private const string _title = "Previous Character";
     private const string _tooltip = "Moves selection to the previous character";
-    private const string _defaultValue = "#Tab;;WorldFullscreenUI;false";
+    private const string _defaultValue = "#A;;WorldFullscreenUI;false";
     private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
     public PrevCharacter() : base(_key, _title, _tooltip, _defaultValue) { }
