@@ -1,4 +1,4 @@
-using EnhancedControls.Features;
+﻿using EnhancedControls.Features;
 using EnhancedControls.Features.Camera;
 using EnhancedControls.Settings;
 using EnhancedControls.UI;
@@ -29,6 +29,12 @@ public class ModSettings
         new TakenFeaturesLast()
     };
 
+    public IReadOnlyList<ModSettingEntry> camera = new List<ModSettingEntry>
+    {
+        new CameraRotateDefault(),
+        new RotateCameraWithRMB()
+    };
+
     private bool Initialized = false;
 
     public void Initialize()
@@ -37,6 +43,11 @@ public class ModSettings
         Initialized = true;
 
         foreach (ModSettingEntry setting in modSettings)
+        {
+            setting.BuildUIAndLink();
+            setting.TryEnable();
+        }
+        foreach (ModSettingEntry setting in camera)
         {
             setting.BuildUIAndLink();
             setting.TryEnable();
@@ -71,6 +82,11 @@ public static class SettingsUIPatches
         Game.Instance.UISettingsManager.m_ControlSettingsList.Add(
             OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.maingroup", "Enhanced Controls",
                 ModSettings.Instance.modSettings.Select(x => x.GetUISettings()).ToArray()
+                ));
+
+        Game.Instance.UISettingsManager.m_ControlSettingsList.Add(
+            OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.cameragroup", "Enhanced Controls - Camera",
+                ModSettings.Instance.camera.Select(x => x.GetUISettings()).ToArray()
                 ));
     }
 
