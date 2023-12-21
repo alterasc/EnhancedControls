@@ -6,17 +6,17 @@ using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows.CharacterInfo.Sections.NameAndPortrait;
 
-namespace EnhancedControls.KeyboardBindings;
+namespace EnhancedControls.Features;
 
-public class PrevCharacter : ModHotkeySettingEntry
+public class NextCharacter : ModHotkeySettingEntry
 {
-    private const string _key = "prevcharacter";
-    private const string _title = "Previous Character";
-    private const string _tooltip = "Moves selection to the previous character";
-    private const string _defaultValue = "#Tab;;WorldFullscreenUI;false";
+    private const string _key = "nextcharacter";
+    private const string _title = "Next Character";
+    private const string _tooltip = "Moves selection to the next character.";
+    private const string _defaultValue = "Tab;;WorldFullscreenUI;false";
     private const string BIND_NAME = $"{PREFIX}.newcontrols.ui.{_key}";
 
-    public PrevCharacter() : base(_key, _title, _tooltip, _defaultValue) { }
+    public NextCharacter() : base(_key, _title, _tooltip, _defaultValue) { }
 
     public override SettingStatus TryEnable() => TryEnableAndPatch(typeof(Patches));
 
@@ -30,10 +30,10 @@ public class PrevCharacter : ModHotkeySettingEntry
         [HarmonyPostfix]
         private static void Add(ServiceWindowsVM __instance)
         {
-            __instance.AddDisposable(Game.Instance.Keyboard.Bind(BIND_NAME, SelectPrevCharacter));
+            __instance.AddDisposable(Game.Instance.Keyboard.Bind(BIND_NAME, SelectNextCharacter));
         }
 
-        private static void SelectPrevCharacter()
+        private static void SelectNextCharacter()
         {
             var uiContext = Game.Instance.RootUiContext;
             var currentWindow = Game.Instance.RootUiContext.CurrentServiceWindow;
@@ -42,7 +42,7 @@ public class PrevCharacter : ModHotkeySettingEntry
                 var serviceWindowsVM = uiContext.IsSpace ? uiContext.SpaceVM.StaticPartVM.ServiceWindowsVM : uiContext.SurfaceVM.StaticPartVM.ServiceWindowsVM;
                 var characterInfoVM = serviceWindowsVM.CharacterInfoVM.Value;
                 var nameAndPortraitVM = (CharInfoNameAndPortraitVM)characterInfoVM.ComponentVMs[CharInfoComponentType.NameAndPortrait].Value;
-                nameAndPortraitVM.SelectPrevCharacter();
+                nameAndPortraitVM.SelectNextCharacter();
             }
             else if (currentWindow == ServiceWindowsType.Inventory)
             {
@@ -50,11 +50,11 @@ public class PrevCharacter : ModHotkeySettingEntry
                 var inventoryVM = serviceWindowsVM.InventoryVM.Value;
 
                 var nameAndPortraitVM = inventoryVM.NameAndPortraitVM;
-                nameAndPortraitVM.SelectPrevCharacter();
+                nameAndPortraitVM.SelectNextCharacter();
             }
             else if (uiContext.m_FullScreenUIType == Kingmaker.UI.Models.FullScreenUIType.Unknown)
             {
-                CharacterSelector.SelectPrevCharacter();
+                CharacterSelector.SelectNextCharacter();
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using EnhancedControls.Localization;
-using EnhancedControls.Settings;
 using HarmonyLib;
 using UnityEngine;
 using UnityModManagerNet;
@@ -9,12 +8,12 @@ namespace EnhancedControls;
 #if DEBUG
 [EnableReloading]
 #endif
-static class Main
+public static class Main
 {
     internal static Harmony HarmonyInstance;
     internal static UnityModManager.ModEntry.ModLogger log;
 
-    static bool Load(UnityModManager.ModEntry modEntry)
+    public static bool Load(UnityModManager.ModEntry modEntry)
     {
         log = modEntry.Logger;
         HarmonyInstance = new Harmony(modEntry.Info.Id);

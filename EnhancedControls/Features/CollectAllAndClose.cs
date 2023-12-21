@@ -4,7 +4,7 @@ using Kingmaker;
 using Kingmaker.Code.UI.MVVM.View.Loot.PC;
 using Kingmaker.Code.UI.MVVM.VM.Loot;
 
-namespace EnhancedControls.KeyboardBindings;
+namespace EnhancedControls.Features;
 
 public class CollectAllAndClose : ModHotkeySettingEntry
 {

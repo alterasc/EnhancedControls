@@ -6,7 +6,7 @@ using Kingmaker.UI.Common;
 using Kingmaker.UI.MVVM.View.SpaceCombat.PC;
 using System.Collections.Generic;
 
-namespace EnhancedControls.KeyboardBindings;
+namespace EnhancedControls.Features;
 
 public class SeparateEndTurn : ModHotkeySettingEntry
 {

@@ -1,5 +1,6 @@
-﻿using EnhancedControls.KeyboardBindings;
-using EnhancedControls.Toggles;
+using EnhancedControls.Features;
+using EnhancedControls.Features.Camera;
+using EnhancedControls.Settings;
 using EnhancedControls.UI;
 using HarmonyLib;
 using Kingmaker;
@@ -9,8 +10,11 @@ using Kingmaker.UI.Models.SettingsUI;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EnhancedControls.Settings;
+namespace EnhancedControls;
 
+/// <summary>
+/// Main class that holds state of all mod functionality by setting
+/// </summary>
 public class ModSettings
 {
     public IReadOnlyList<ModSettingEntry> modSettings = new List<ModSettingEntry> {
@@ -52,7 +56,7 @@ public class ModSettings
 public static class SettingsUIPatches
 {
     /// <summary>
-    /// Initializes and adds setting group to Controls section of game settings
+    /// Initializes mod features and adds setting group to Controls section of game settings
     /// </summary>
     [HarmonyPatch(typeof(UISettingsManager), nameof(UISettingsManager.Initialize))]
     [HarmonyPostfix]

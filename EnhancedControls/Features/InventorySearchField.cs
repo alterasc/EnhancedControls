@@ -6,7 +6,7 @@ using Kingmaker.Code.UI.MVVM.View.Slots;
 using Kingmaker.Code.UI.MVVM.VM.ServiceWindows;
 using Kingmaker.UI.MVVM.View.ServiceWindows.Inventory.VisualSettings;
 
-namespace EnhancedControls.KeyboardBindings;
+namespace EnhancedControls.Features;
 
 internal class InventorySearchField : ModHotkeySettingEntry
 {

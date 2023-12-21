@@ -7,7 +7,7 @@ using Kingmaker.PubSubSystem;
 using Kingmaker.PubSubSystem.Core;
 using Kingmaker.UI.Common;
 
-namespace EnhancedControls.KeyboardBindings;
+namespace EnhancedControls.Features;
 
 public class NextTab : ModHotkeySettingEntry
 {

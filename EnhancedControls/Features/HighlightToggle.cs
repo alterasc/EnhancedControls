@@ -7,7 +7,7 @@ using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
 using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
 
-namespace EnhancedControls.KeyboardBindings;
+namespace EnhancedControls.Features;
 
 public class HighlightToggle : ModHotkeySettingEntry
 {

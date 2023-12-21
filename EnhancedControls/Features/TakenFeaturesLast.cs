@@ -7,7 +7,7 @@ using Owlcat.Runtime.UI.MVVM;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EnhancedControls.Toggles;
+namespace EnhancedControls.Features;
 
 public class TakenFeaturesLast : ModToggleSettingEntry
 {
@@ -25,7 +25,7 @@ public class TakenFeaturesLast : ModToggleSettingEntry
     {
         /// <summary>
         /// Removes normal setting of FilteredGroupList
-        /// and replaces it with method above that sorts output by 
+        /// and replaces it with method below that sorts output by 
         /// whether feature is already taken to the max
         /// 
         /// This results in UI placing already taken features at the bottom
