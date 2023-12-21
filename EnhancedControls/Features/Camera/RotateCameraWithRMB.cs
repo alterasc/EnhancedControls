@@ -18,8 +18,8 @@ namespace EnhancedControls.Features.Camera;
 public class RotateCameraWithRMB : ModToggleSettingEntry
 {
     private const string _key = "rotatecamerawithrmb";
-    private const string _title = "Rotate camera with right mouse button";
-    private const string _tooltip = "Rotate camera with right mouse button instead of middle";
+    private const string _title = "Rotate camera with right mouse button (Experimental)";
+    private const string _tooltip = "Rotate camera with right mouse button instead of middle. You WILL lose some functionality normally done with RMB. See description.";
     private const bool _defaultValue = false;
 
     public RotateCameraWithRMB() : base(_key, _title, _tooltip, _defaultValue) { }

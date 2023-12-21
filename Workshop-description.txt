@@ -1,56 +1,48 @@
-[h1]Adds new keybindings and UI-related settings.[/h1] 
+[h1]Adds new controls and UI-related settings.[/h1]
 
-You can disable or rebind any part of the mod that you want but by default this conflicts with default control scheme, so read what you're getting into. 
-
-[h2]New hotkeys[/h2]
-
-[h3]Separate End Turn button - default: Ctrl+Space[/h3]
+[h2]Main settings[/h2]
+[h3]Separate End Turn button - default: not bound[/h3]
 If this button is bound, then it moves End Turn/Start Battle functionality from Pause button to new button.
 Do NOT use in conjuction with Toybox "Disable end turn HotKey" option. Choose one or another.
-
 [h3]Separate Toggle Highlight Objects - default: Ctrl+R[/h3]
 Enables/disables object highlighting.
 Do NOT use in conjuction with Toybox "Object Highlight Toggle Mode" option. Choose one or another.
-
-[h3]Next character - default: Tab[/h3]
+[h3]Next character - default: Shift+D[/h3]
 Works in character menu and inventory and on surface.
 Moves selection to the next character.
-Conflicts with default "Highlight objects" binding. So unbind or change one of the two.
-My suggestion is to assign normal highlight to "R" (because my default for toggle is Ctrl+R)
-
-[h3]Previous character - default: Shift+Tab[/h3]
+[h3]Previous character - default: Shift+A[/h3]
 Works in character menu and inventory and on surface.
 Moves selection to the previous character.
 Conflicts with default steam overlay. So unbind or change if you're on steam.
-
-[h3]Next menu tab - default: Ctrl+Tab[/h3]
+[h3]Next menu tab - default: Shift+E[/h3]
 Works in character menu and inventory.
 In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)
 In inventory moves inventory filter (All -> Weapons -> Armor -> ...)
-
-[h3]Previous menu tab - default: Ctrl+Shift+Tab[/h3]
+[h3]Previous menu tab - default: Shift+Q[/h3]
 Works in character menu and inventory.
 In character menu moves selection to previous page tab  (so Archetypes -> Features -> Summary ->...)
 In inventory moves inventory filter (Armor -> Weapons -> All -> ...)
-
 [h3]Inventory Search - default: Ctrl-F[/h3]
 When you're in inventory, this activates inventory search field.
-
 [h3]Collect All and Close - default: F[/h3]
 In loot window collects all and closes loot window
-
-[h2]New settings[/h2]
-
-[h3]Place taken talents last - default: On[/h3]
+[h3]Place taken talents last (toggle)- default: On[/h3]
 Places already taken talents/abilities/etc at the bottom of selection list.
+[h2]Camera[/h2]
+[h3]Rotate camera to point North - default: not bound[/h3]
+Rotates camera to point North. Similar to button PF: WotR had
+[h3]Rotate camera with right mouse button (Experimental) (toggle)- default: Off[/h3]
+Rotate camera with right mouse button instead of middle.
+Warning: enabling this will make you lose some stuff assigned to RMB. 
+You will lose this holdover thing from PF games, where you could press and hold RMB and then mouse to make your party face some direction. Visual pointer that PF games had was removed, while button still kinda works.
+Maybe more.
+Use at your own risk.
 
+[hr][/hr]
 [h2]Configuration:[/h2]
 Through native game settings.
 Go to Settings -> Controls -> scroll to the bottom
 To disable setting, just unbind the key.
-Note - at the moment it does not take into account alternative keybind, only main one.
-
-[b]Changes are appled only after restart.[/b]
-
+[h2]Installation:[/h2]
 [url=https://github.com/cabarius/ToyBox/wiki/Installing-Toybox-for-RT-(Steam-Workshop-Edition)]Installation guide[/url]
 This is written by ToyBox team for ToyBox, but same principle applies to this mod. Only mod id is different, and name your folder not '0Toybox0' but 'EnhancedControls'
