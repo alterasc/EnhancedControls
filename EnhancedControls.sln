@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnhancedControls", "Enhance
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{465C902E-55CF-4518-B341-1573B0EB0C1C}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		enhanced-controls.png = enhanced-controls.png
 		LICENSE.txt = LICENSE.txt
