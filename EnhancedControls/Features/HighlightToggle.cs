@@ -43,7 +43,7 @@ public class HighlightToggle : ModHotkeySettingEntry
         private static void AfterOnEnable(InteractionHighlightController __instance)
         {
             Game.Instance.Keyboard.Bind(BIND_NAME, ToggleHighlight);
-            __instance.Highlight(_highlightState);
+            __instance.Highlight(_highlightState && !Game.Instance.Player.IsInCombat);
         }
 
         /// <summary>
