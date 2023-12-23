@@ -1,9 +1,10 @@
-﻿using EnhancedControls.UI;
+﻿using EnhancedControls.Localization;
 using Kingmaker;
 using Kingmaker.Settings;
 using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Models.SettingsUI.SettingAssets;
 using System;
+using UnityEngine;
 
 namespace EnhancedControls.Settings;
 
@@ -25,12 +26,22 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
     public string GetBindName() => $"{PREFIX}.newcontrols.ui.{Key}";
     public override void BuildUIAndLink()
     {
-        UiSettingEntity = OwlcatUITools.MakeKeyBind($"{PREFIX}.newcontrols.ui.{Key}", Title, Tooltip);
+        UiSettingEntity = MakeKeyBind();
         UiSettingEntity.LinkSetting(SettingEntity);
         (SettingEntity as IReadOnlySettingEntity<KeyBindingPair>).OnValueChanged += delegate
         {
             TryEnable();
         };
+    }
+
+    private UISettingsEntityKeyBinding MakeKeyBind()
+    {
+        var keyBindSetting = ScriptableObject.CreateInstance<UISettingsEntityKeyBinding>();
+        keyBindSetting.m_Description = ModLocalizationManager.CreateString($"{PREFIX}.{Key}.description", Title);
+        keyBindSetting.m_TooltipDescription = ModLocalizationManager.CreateString($"{PREFIX}.{Key}.tooltip-description", Tooltip);
+        keyBindSetting.name = $"{PREFIX}.newcontrols.ui.{Key}";
+        keyBindSetting.m_EncyclopediaDescription = new();
+        return keyBindSetting;
     }
 
     protected void RegisterKeybind()

@@ -16,16 +16,6 @@ public static class OwlcatUITools
         return toggle;
     }
 
-    public static UISettingsEntityKeyBinding MakeKeyBind(string key, string name, string tooltip)
-    {
-        var keyBindSetting = ScriptableObject.CreateInstance<UISettingsEntityKeyBinding>();
-        keyBindSetting.m_Description = ModLocalizationManager.CreateString($"{key}.description", name);
-        keyBindSetting.m_TooltipDescription = ModLocalizationManager.CreateString($"{key}.tooltip-description", tooltip);
-        keyBindSetting.name = key;
-        keyBindSetting.m_EncyclopediaDescription = new();
-        return keyBindSetting;
-    }
-
     public static UISettingsGroup MakeSettingsGroup(string key, string name, params UISettingsEntityBase[] settings)
     {
         UISettingsGroup group = ScriptableObject.CreateInstance<UISettingsGroup>();
