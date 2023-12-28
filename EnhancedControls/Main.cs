@@ -1,5 +1,6 @@
 ﻿using EnhancedControls.Localization;
 using HarmonyLib;
+using System.IO;
 using UnityEngine;
 using UnityModManagerNet;
 
@@ -12,14 +13,19 @@ public static class Main
 {
     internal static Harmony HarmonyInstance;
     internal static UnityModManager.ModEntry.ModLogger log;
+    internal static UnityModManager.ModEntry ModEntry;
 
     public static bool Load(UnityModManager.ModEntry modEntry)
     {
+        ModEntry = modEntry;
         log = modEntry.Logger;
         HarmonyInstance = new Harmony(modEntry.Info.Id);
 
         // patch to manage added localized strings
-        HarmonyInstance.CreateClassProcessor(typeof(ModLocalizationManager.AddLocalizedStringsToPack)).Patch();
+        //HarmonyInstance.CreateClassProcessor(typeof(ModLocalizationManager.AddLocalizedStringsToPack)).Patch();
+
+        ModLocalizationManager.Init();
+
 
         // patches to configure mod
         HarmonyInstance.CreateClassProcessor(typeof(SettingsUIPatches)).Patch();

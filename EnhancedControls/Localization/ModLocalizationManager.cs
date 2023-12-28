@@ -1,52 +1,94 @@
-﻿using HarmonyLib;
-using Kingmaker.Localization;
+﻿using Kingmaker.Localization;
+using Kingmaker.Localization.Enums;
 using Kingmaker.Localization.Shared;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 
 namespace EnhancedControls.Localization;
 
 internal class ModLocalizationManager
 {
-    // All localized strings created in this mod, mapped to their localized key. Populated by CreateString.
-    private static readonly Dictionary<string, LocalString> strings = new();
+    private static MyLocalizationPack enPack;
 
-    public static LocalizedString CreateString(string key, string value)
+    public static void Init()
     {
-        // See if we used the text previously.
-        // (It's common for many features to use the same localized text.
-        // In that case, we reuse the old entry instead of making a new one.)
-        if (strings.TryGetValue(value, out var localString))
-        {
-            return localString.LocalizedString;
-        }
-        LocalizationManager.Instance.CurrentPack.PutString(key, value);
-        localString = new LocalString(value, new LocalizedString { m_ShouldProcess = false, m_Key = key });
-        strings[key] = localString;
-        return localString.LocalizedString;
+        enPack = LoadPack(Locale.enGB);
+
+        ApplyLocalization(LocalizationManager.Instance.CurrentLocale);
+
+        (LocalizationManager.Instance as ILocalizationProvider).LocaleChanged += ApplyLocalization;
     }
-    [HarmonyPatch(typeof(LocalizationManager))]
-    internal static class AddLocalizedStringsToPack
+
+    public static void ApplyLocalization(Locale currentLocale)
     {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(LocalizationManager.LoadPack), typeof(Kingmaker.Localization.Enums.Locale))]
-        public static void AddMyLocalizationString(ref LocalizationPack __result)
+        var currentPack = LocalizationManager.Instance.CurrentPack;
+        foreach (var entry in enPack.Strings)
         {
-            foreach (var str in strings)
+            currentPack.PutString(entry.Key, entry.Value.Text);
+        }
+
+        if (currentLocale != Locale.enGB)
+        {
+            var localized = LoadPack(currentLocale);
+            if (localized != null)
             {
-                __result.PutString(str.Key, str.Value.Text);
+                foreach (var entry in localized.Strings)
+                {
+                    currentPack.PutString(entry.Key, entry.Value.Text);
+                }
             }
         }
     }
 
-    private class LocalString
+    private static MyLocalizationPack LoadPack(Locale locale)
     {
-        internal string Text;
-        internal LocalizedString LocalizedString;
-
-        public LocalString(string text, LocalizedString localizedString)
+        var localizationFolder = Path.Combine(Main.ModEntry.Path, "Localization");
+        var packFile = Path.Combine(localizationFolder, locale.ToString() + ".json");
+        if (File.Exists(packFile))
         {
-            Text = text;
-            LocalizedString = localizedString;
+            try
+            {
+                using StreamReader file = File.OpenText(packFile);
+                using JsonReader jsonReader = new JsonTextReader(file);
+                JsonSerializer serializer = new();
+                var enLocalization = serializer.Deserialize<MyLocalizationPack>(jsonReader);
+                return enLocalization;
+            }
+            catch (System.Exception ex)
+            {
+                Main.log.Error($"Failed to read or parse {locale} mod localization pack: {ex.Message}");
+            }
+        }
+        else
+        {
+            Main.log.Log($"Missing localization pack for {locale}");
+        }
+        return null;
+    }
+
+    public static LocalizedString CreateString(string key, string value)
+    {
+        if (enPack.Strings.ContainsKey(key))
+        {
+            return new LocalizedString { m_ShouldProcess = false, m_Key = key };
+        }
+        else
+        {
+            Main.log.Log($"Missing localization string {key}");
+            return new LocalizedString { m_ShouldProcess = false, m_Key = key };
         }
     }
 }
+
+public record class MyLocalizationPack
+{
+    [JsonProperty]
+    public readonly Dictionary<string, MyLocalizationEntry> Strings;
+}
+
+public struct MyLocalizationEntry
+{
+    [JsonProperty]
+    public readonly string Text;
+};
