@@ -80,12 +80,12 @@ public static class SettingsUIPatches
         ModSettings.Instance.Initialize();
 
         Game.Instance.UISettingsManager.m_ControlSettingsList.Add(
-            OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.maingroup", "Enhanced Controls",
+            OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.group.main", "Enhanced Controls",
                 ModSettings.Instance.modSettings.Select(x => x.GetUISettings()).ToArray()
                 ));
 
         Game.Instance.UISettingsManager.m_ControlSettingsList.Add(
-            OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.cameragroup", "Enhanced Controls - Camera",
+            OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.group.camera", "Enhanced Controls - Camera",
                 ModSettings.Instance.camera.Select(x => x.GetUISettings()).ToArray()
                 ));
     }

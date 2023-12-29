@@ -23,6 +23,7 @@ internal class ModLocalizationManager
     public static void ApplyLocalization(Locale currentLocale)
     {
         var currentPack = LocalizationManager.Instance.CurrentPack;
+        if (currentPack == null) return;
         foreach (var entry in enPack.Strings)
         {
             currentPack.PutString(entry.Key, entry.Value.Text);
@@ -31,14 +32,19 @@ internal class ModLocalizationManager
         if (currentLocale != Locale.enGB)
         {
             var localized = LoadPack(currentLocale);
-            if (localized != null)
+            foreach (var entry in localized.Strings)
             {
-                foreach (var entry in localized.Strings)
-                {
-                    currentPack.PutString(entry.Key, entry.Value.Text);
-                }
+                currentPack.PutString(entry.Key, entry.Value.Text);
             }
         }
+#if DEBUG
+        var localizationFolder = Path.Combine(Main.ModEntry.Path, "Localization");
+        var packFile = Path.Combine(localizationFolder, Locale.enGB.ToString() + ".json");
+        using StreamWriter file = new(packFile);
+        using JsonWriter jsonReader = new JsonTextWriter(file);
+        JsonSerializer serializer = new();
+        serializer.Serialize(jsonReader, enPack);
+#endif
     }
 
     private static MyLocalizationPack LoadPack(Locale locale)
@@ -64,7 +70,7 @@ internal class ModLocalizationManager
         {
             Main.log.Log($"Missing localization pack for {locale}");
         }
-        return null;
+        return new() { Strings = new() };
     }
 
     public static LocalizedString CreateString(string key, string value)
@@ -76,6 +82,9 @@ internal class ModLocalizationManager
         else
         {
             Main.log.Log($"Missing localization string {key}");
+#if DEBUG
+            enPack.Strings[key] = new() { Text = value };
+#endif
             return new LocalizedString { m_ShouldProcess = false, m_Key = key };
         }
     }
@@ -84,11 +93,11 @@ internal class ModLocalizationManager
 public record class MyLocalizationPack
 {
     [JsonProperty]
-    public readonly Dictionary<string, MyLocalizationEntry> Strings;
+    public Dictionary<string, MyLocalizationEntry> Strings;
 }
 
 public struct MyLocalizationEntry
 {
     [JsonProperty]
-    public readonly string Text;
+    public string Text;
 };

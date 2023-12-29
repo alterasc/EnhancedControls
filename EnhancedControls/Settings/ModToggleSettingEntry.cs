@@ -1,8 +1,9 @@
-﻿using EnhancedControls.UI;
+﻿using EnhancedControls.Localization;
 using Kingmaker.Settings;
 using Kingmaker.Settings.Entities;
 using Kingmaker.UI.Models.SettingsUI.SettingAssets;
 using System;
+using UnityEngine;
 
 namespace EnhancedControls.Settings;
 
@@ -21,7 +22,10 @@ public abstract class ModToggleSettingEntry : ModSettingEntry
 
     public override void BuildUIAndLink()
     {
-        UiSettingEntity = OwlcatUITools.MakeToggle($"{PREFIX}.newcontrols.ui.{Key}", Title, Tooltip);
+        UiSettingEntity = ScriptableObject.CreateInstance<UISettingsEntityBool>();
+        UiSettingEntity.m_Description = ModLocalizationManager.CreateString($"{PREFIX}.feature.{Key}.description", Title);
+        UiSettingEntity.m_TooltipDescription = ModLocalizationManager.CreateString($"{PREFIX}.feature.{Key}.tooltip-description", Tooltip);
+        UiSettingEntity.DefaultValue = false;
         UiSettingEntity.LinkSetting(SettingEntity);
         (SettingEntity as IReadOnlySettingEntity<bool>).OnValueChanged += delegate
         {

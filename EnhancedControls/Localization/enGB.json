@@ -1,0 +1,76 @@
+{
+  "Strings": {
+    "alterasc.enhancedcontrols.feature.highlighttoggle.description": {
+      "Text": "Toggle Highlight Objects"
+    },
+    "alterasc.enhancedcontrols.feature.highlighttoggle.tooltip-description": {
+      "Text": "Toggles object highlighting."
+    },
+    "alterasc.enhancedcontrols.feature.separateendturn.description": {
+      "Text": "Separate End Turn"
+    },
+    "alterasc.enhancedcontrols.feature.separateendturn.tooltip-description": {
+      "Text": "If this button is bound, then it removes End Turn functionality from Pause button (Space) and assigns this to this button"
+    },
+    "alterasc.enhancedcontrols.feature.collectallandclose.description": {
+      "Text": "Collect All and Close"
+    },
+    "alterasc.enhancedcontrols.feature.collectallandclose.tooltip-description": {
+      "Text": "Collects all loot and closes loot window"
+    },
+    "alterasc.enhancedcontrols.feature.inventorysearch.description": {
+      "Text": "Search Inventory"
+    },
+    "alterasc.enhancedcontrols.feature.inventorysearch.tooltip-description": {
+      "Text": "Activates search input field when you're in inventory menu."
+    },
+    "alterasc.enhancedcontrols.feature.nextcharacter.description": {
+      "Text": "Next Character"
+    },
+    "alterasc.enhancedcontrols.feature.nextcharacter.tooltip-description": {
+      "Text": "Moves selection to the next character."
+    },
+    "alterasc.enhancedcontrols.feature.nexttab.description": {
+      "Text": "Next Menu Tab"
+    },
+    "alterasc.enhancedcontrols.feature.nexttab.tooltip-description": {
+      "Text": "In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)\r\nIn inventory moves inventory filter (All -> Weapons -> Armor -> ...)"
+    },
+    "alterasc.enhancedcontrols.feature.prevcharacter.description": {
+      "Text": "Previous Character"
+    },
+    "alterasc.enhancedcontrols.feature.prevcharacter.tooltip-description": {
+      "Text": "Moves selection to the previous character"
+    },
+    "alterasc.enhancedcontrols.feature.prevtab.description": {
+      "Text": "Previous Menu Tab"
+    },
+    "alterasc.enhancedcontrols.feature.prevtab.tooltip-description": {
+      "Text": "In character menu moves selection to previous page tab  (so Archetypes -> Features -> Summary ->...)\r\nIn inventory moves inventory filter (Armor -> Weapons -> All -> ...)"
+    },
+    "alterasc.enhancedcontrols.feature.takenfeatureslast.description": {
+      "Text": "Place taken talents last"
+    },
+    "alterasc.enhancedcontrols.feature.takenfeatureslast.tooltip-description": {
+      "Text": "Places already taken talents/abilities/etc at the bottom of selection list"
+    },
+    "alterasc.enhancedcontrols.feature.camerarotatedefault.description": {
+      "Text": "Rotate camera to point North"
+    },
+    "alterasc.enhancedcontrols.feature.camerarotatedefault.tooltip-description": {
+      "Text": "Rotates camera to point North"
+    },
+    "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.description": {
+      "Text": "Rotate camera with right mouse button (Experimental)"
+    },
+    "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.tooltip-description": {
+      "Text": "Rotate camera with right mouse button instead of middle. You WILL lose some functionality normally done with RMB. See description."
+    },
+    "alterasc.enhancedcontrols.group.main": {
+      "Text": "Enhanced Controls"
+    },
+    "alterasc.enhancedcontrols.group.camera": {
+      "Text": "Enhanced Controls - Camera"
+    }
+  }
+}

@@ -37,8 +37,8 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
     private UISettingsEntityKeyBinding MakeKeyBind()
     {
         var keyBindSetting = ScriptableObject.CreateInstance<UISettingsEntityKeyBinding>();
-        keyBindSetting.m_Description = ModLocalizationManager.CreateString($"{PREFIX}.{Key}.description", Title);
-        keyBindSetting.m_TooltipDescription = ModLocalizationManager.CreateString($"{PREFIX}.{Key}.tooltip-description", Tooltip);
+        keyBindSetting.m_Description = ModLocalizationManager.CreateString($"{PREFIX}.feature.{Key}.description", Title);
+        keyBindSetting.m_TooltipDescription = ModLocalizationManager.CreateString($"{PREFIX}.feature.{Key}.tooltip-description", Tooltip);
         keyBindSetting.name = $"{PREFIX}.newcontrols.ui.{Key}";
         keyBindSetting.m_EncyclopediaDescription = new();
         return keyBindSetting;

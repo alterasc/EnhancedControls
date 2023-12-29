@@ -140,6 +140,11 @@
 		<PackageReference Include="Aze.Publicise.MSBuild.Task" Version="1.1.0" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all" />
 		<PackageReference Include="PublishToWorkshop" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" Version="1.0.10" PrivateAssets="all" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Localization\enGB.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 	<Target Name="Publicise" AfterTargets="BeforeBuild;Clean" Inputs="@(PubliciseInputAssemblies)" Outputs="$(SolutionDir)lib\%(PubliciseInputAssemblies.FileName)_public.dll;$(SolutionDir)lib\%(PubliciseInputAssemblies.FileName)_public.hash">
 		<MakeDir Directories="$(SolutionDir)lib/" />
 		<Publicise InputAssemblies="@(PubliciseInputAssemblies)" OutputPath="$(SolutionDir)lib/" PubliciseCompilerGenerated="true" />
