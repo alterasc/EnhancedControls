@@ -18,8 +18,6 @@ public class PrevCharacter : ModHotkeySettingEntry
 
     public PrevCharacter() : base(_key, _title, _tooltip, _defaultValue) { }
 
-    public override SettingStatus TryEnable() => TryEnableAndPatch(typeof(Patches));
-
     [HarmonyPatch]
     private static class Patches
     {

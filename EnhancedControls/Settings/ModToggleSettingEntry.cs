@@ -33,7 +33,7 @@ public abstract class ModToggleSettingEntry : ModSettingEntry
         };
     }
 
-    protected SettingStatus TryEnableAndPatch(Type type)
+    protected override SettingStatus TryEnableAndPatch(params Type[] type)
     {
         var currentValue = SettingEntity.GetValue();
         if (currentValue)

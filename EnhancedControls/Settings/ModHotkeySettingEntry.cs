@@ -28,7 +28,7 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
     {
         UiSettingEntity = MakeKeyBind();
         UiSettingEntity.LinkSetting(SettingEntity);
-        (SettingEntity as IReadOnlySettingEntity<KeyBindingPair>).OnValueChanged += delegate
+        (SettingEntity as IReadOnlySettingEntity<KeyBindingPair>).OnValueChanged += delegate (KeyBindingPair value)
         {
             TryEnable();
         };
@@ -40,7 +40,7 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
         keyBindSetting.m_Description = ModLocalizationManager.CreateString($"{PREFIX}.feature.{Key}.description", Title);
         keyBindSetting.m_TooltipDescription = ModLocalizationManager.CreateString($"{PREFIX}.feature.{Key}.tooltip-description", Tooltip);
         keyBindSetting.name = $"{PREFIX}.newcontrols.ui.{Key}";
-        keyBindSetting.m_EncyclopediaDescription = new();
+        keyBindSetting.m_EncyclopediaDescription = [];
         return keyBindSetting;
     }
 
@@ -50,7 +50,7 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
 
         var currentValue = SettingEntity.GetValue();
 
-        if (currentValue.Binding1.Key != UnityEngine.KeyCode.None)
+        if (currentValue.Binding1.Key != KeyCode.None)
         {
             Game.Instance.Keyboard.RegisterBinding(
                 GetBindName(),
@@ -64,7 +64,7 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
             Main.log.Log($"{Title} binding 1 empty");
         }
 
-        if (currentValue.Binding2.Key != UnityEngine.KeyCode.None)
+        if (currentValue.Binding2.Key != KeyCode.None)
         {
             Game.Instance.Keyboard.RegisterBinding(
                 GetBindName(),
@@ -79,13 +79,13 @@ public abstract class ModHotkeySettingEntry : ModSettingEntry
         }
     }
 
-    protected SettingStatus TryEnableAndPatch(Type type)
+    protected override SettingStatus TryEnableAndPatch(params Type[] type)
     {
         TryFix();
         if (Status != SettingStatus.NOT_APPLIED) return Status;
         RegisterKeybind();
         var currentValue = SettingEntity.GetValue();
-        if (currentValue.Binding1.Key != UnityEngine.KeyCode.None || currentValue.Binding2.Key != UnityEngine.KeyCode.None)
+        if (currentValue.Binding1.Key != KeyCode.None || currentValue.Binding2.Key != KeyCode.None)
         {
             return TryPatchInternal(type);
         }

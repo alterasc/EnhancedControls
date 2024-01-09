@@ -1,5 +1,10 @@
-﻿using Kingmaker.UI.Models.SettingsUI.SettingAssets;
+﻿using EnhancedControls.Common;
+using HarmonyLib;
+using Kingmaker.UI.Models.SettingsUI.SettingAssets;
+using Owlcat.Runtime.Core;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace EnhancedControls.Settings;
 
@@ -20,7 +25,34 @@ public abstract class ModSettingEntry
         Tooltip = tooltip;
     }
 
-    public abstract SettingStatus TryEnable();
+    /// <summary>
+    /// Enable setting.
+    /// By default searches for nested static class with <see cref="HarmonyPatch"/> attribute
+    /// and calls TryEnableAndPatch with it
+    /// </summary>
+    /// <returns></returns>
+    public virtual SettingStatus TryEnable()
+    {
+        Type[] nestedTypes = GetType().GetNestedTypes(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+        var patchClasses = nestedTypes
+            .Where(type => type.IsDefined(typeof(HarmonyPatch), inherit: false))
+            .ToArray();
+        if (patchClasses.Empty())
+        {
+            Main.log.Warning($"No patch classes defined for {Title}");
+        }
+#if DEBUG
+        foreach (var patchClass in patchClasses)
+        {
+            Main.log.Log($"For {Title} found patch class: {patchClass.Name}");
+        } 
+#endif
+        return TryEnableAndPatch(patchClasses);
+    }
+
+    protected abstract SettingStatus TryEnableAndPatch(params Type[] type);
+
+    public virtual SettingStatus TryDisable() => Status;
 
     public abstract void BuildUIAndLink();
 
@@ -41,6 +73,26 @@ public abstract class ModSettingEntry
         catch (Exception ex)
         {
             Main.log.Error($"{Title} patch exception: {ex.Message}");
+            Status = SettingStatus.ERROR;
+        }
+        return Status;
+    }
+
+    protected SettingStatus TryUnpatchInternal(params Type[] type)
+    {
+        if (Status != SettingStatus.WORKING) return Status;
+        try
+        {
+            foreach (Type t in type)
+            {
+                HarmonyUtils.UnpatchClass(Main.HarmonyInstance, t);
+            }
+            Status = SettingStatus.NOT_APPLIED;
+            Main.log.Log($"{Title} unpatch succeeded");
+        }
+        catch (Exception ex)
+        {
+            Main.log.Error($"{Title} unpatch exception: {ex.Message}");
             Status = SettingStatus.ERROR;
         }
         return Status;

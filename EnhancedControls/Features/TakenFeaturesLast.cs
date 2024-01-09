@@ -18,8 +18,6 @@ public class TakenFeaturesLast : ModToggleSettingEntry
 
     public TakenFeaturesLast() : base(_key, _title, _tooltip, _defaultValue) { }
 
-    public override SettingStatus TryEnable() => TryEnableAndPatch(typeof(Patches));
-
     [HarmonyPatch]
     private class Patches
     {
