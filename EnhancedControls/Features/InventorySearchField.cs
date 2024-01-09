@@ -41,7 +41,11 @@ internal class InventorySearchField : ModHotkeySettingEntry
             var currentWindow = Game.Instance.RootUiContext.CurrentServiceWindow;
             if (currentWindow == ServiceWindowsType.Inventory)
             {
-                var commonInventory = RootUIContext.Instance.m_UIView.transform.Find("SurfaceStaticPartPCView/StaticCanvas/ServiceWindowsPCView/InventoryPCView/InventoryRightCanvas/Background/CommonInventory/");
+                var uiContext = Game.Instance.RootUiContext;
+                var path = uiContext.IsSpace
+                    ? "SpaceStaticPartPCView/StaticCanvas/ServiceWindowsPCView/InventoryPCView/InventoryRightCanvas/Background/CommonInventory/"
+                    : "SurfaceStaticPartPCView/StaticCanvas/ServiceWindowsPCView/InventoryPCView/InventoryRightCanvas/Background/CommonInventory/";
+                var commonInventory = RootUIContext.Instance.m_UIView.transform.Find(path);
                 if (commonInventory != null)
                 {
                     var stash = commonInventory.gameObject.GetComponent<InventoryStashPCView>();
