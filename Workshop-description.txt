@@ -13,7 +13,6 @@ Moves selection to the next character.
 [h3]Previous character - default: Shift+A[/h3]
 Works in character menu and inventory and on surface.
 Moves selection to the previous character.
-Conflicts with default steam overlay. So unbind or change if you're on steam.
 [h3]Next menu tab - default: Shift+E[/h3]
 Works in character menu and inventory.
 In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)
@@ -43,8 +42,5 @@ Use at your own risk.
 Through native game settings.
 Go to Settings -> Controls -> scroll to the bottom
 To disable setting, just unbind the key.
-[h2]Installation:[/h2]
-[url=https://github.com/cabarius/ToyBox/wiki/Installing-Toybox-for-RT-(Steam-Workshop-Edition)]Installation guide[/url]
-This is written by ToyBox team for ToyBox, but same principle applies to this mod. Only mod id is different, and name your folder not '0Toybox0' but 'EnhancedControls'
 
 Want to contribute localization to your language? Read [url=https://github.com/alterasc/EnhancedControls#How-to-contribute-localization]this[/url]
