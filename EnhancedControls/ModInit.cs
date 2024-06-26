@@ -18,20 +18,11 @@ namespace EnhancedControls;
 public class ModSettings
 {
     public IReadOnlyList<ModSettingEntry> modSettings = new List<ModSettingEntry> {
-        new HighlightToggle(),
-        new SeparateEndTurn(),
-        new CollectAllAndClose(),
-        new InventorySearchField(),
-        new NextCharacter(),
-        new NextTab(),
-        new PrevCharacter(),
-        new PrevTab(),
-        new TakenFeaturesLast()
+        new HighlightToggle()
     };
 
     public IReadOnlyList<ModSettingEntry> camera = new List<ModSettingEntry>
     {
-        new CameraRotateDefault(),
         new RotateCameraWithRMB()
     };
 

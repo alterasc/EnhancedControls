@@ -1,35 +1,10 @@
 [h1]Adds new controls and UI-related settings.[/h1]
 
 [h2]Main settings[/h2]
-[h3]Separate End Turn button - default: not bound[/h3]
-If this button is bound, then it moves End Turn/Start Battle functionality from Pause button to new button.
-Do NOT use in conjuction with Toybox "Disable end turn HotKey" option. Choose one or another.
 [h3]Separate Toggle Highlight Objects - default: Ctrl+R[/h3]
 Enables/disables object highlighting.
 Do NOT use in conjuction with Toybox "Object Highlight Toggle Mode" option. Choose one or another.
-[h3]Next character - default: Shift+D[/h3]
-Works in character menu and inventory and on surface.
-Moves selection to the next character.
-[h3]Previous character - default: Shift+A[/h3]
-Works in character menu and inventory and on surface.
-Moves selection to the previous character.
-[h3]Next menu tab - default: Shift+E[/h3]
-Works in character menu and inventory.
-In character menu moves selection to next page tab  (so Summary -> Features -> Archetypes ->...)
-In inventory moves inventory filter (All -> Weapons -> Armor -> ...)
-[h3]Previous menu tab - default: Shift+Q[/h3]
-Works in character menu and inventory.
-In character menu moves selection to previous page tab  (so Archetypes -> Features -> Summary ->...)
-In inventory moves inventory filter (Armor -> Weapons -> All -> ...)
-[h3]Inventory Search - default: Ctrl-F[/h3]
-When you're in inventory, this activates inventory search field.
-[h3]Collect All and Close - default: F[/h3]
-In loot window collects all and closes loot window
-[h3]Place taken talents last (toggle)- default: On[/h3]
-Places already taken talents/abilities/etc at the bottom of selection list.
 [h2]Camera[/h2]
-[h3]Rotate camera to point North - default: not bound[/h3]
-Rotates camera to point North. Similar to button PF: WotR had
 [h3]Rotate camera with right mouse button (Experimental) (toggle)- default: Off[/h3]
 Rotate camera with right mouse button instead of middle.
 Warning: enabling this will make you lose some stuff assigned to RMB. 
