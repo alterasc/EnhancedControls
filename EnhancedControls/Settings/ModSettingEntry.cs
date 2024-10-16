@@ -45,7 +45,7 @@ public abstract class ModSettingEntry
         foreach (var patchClass in patchClasses)
         {
             Main.log.Log($"For {Title} found patch class: {patchClass.Name}");
-        } 
+        }
 #endif
         return TryEnableAndPatch(patchClasses);
     }

@@ -18,7 +18,9 @@ namespace EnhancedControls;
 public class ModSettings
 {
     public IReadOnlyList<ModSettingEntry> modSettings = new List<ModSettingEntry> {
-        new HighlightToggle()
+        new HighlightToggle(),
+        new WalkToggle(),
+        new ShiftClickToWalk(),
     };
 
     public IReadOnlyList<ModSettingEntry> camera = new List<ModSettingEntry>
@@ -47,6 +49,15 @@ public class ModSettings
         {
             SettingsController.Instance.SaveAll();
             Main.log.Log("Hotkey settings were migrated");
+        }
+        try
+        {
+            Main.HarmonyInstance.CreateClassProcessor(typeof(MovementManager.MovementPatches)).Patch();
+            Main.log.Log("MovementManager.MovementPatches patch succeeded");
+        }
+        catch (System.Exception ex)
+        {
+            Main.log.Log($"MovementManager.MovementPatches patch exception: {ex.Message}");
         }
     }
 

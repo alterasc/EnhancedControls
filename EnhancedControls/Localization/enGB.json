@@ -17,6 +17,18 @@
     },
     "alterasc.enhancedcontrols.group.camera": {
       "Text": "Enhanced Controls - Camera"
+    },
+    "alterasc.enhancedcontrols.feature.walktoggle.description": {
+      "Text": "Toggle Walk/Run/Sprint"
+    },
+    "alterasc.enhancedcontrols.feature.walktoggle.tooltip-description": {
+      "Text": "Toggles movement animation between normal behavior(distance-based)/always walk/always run/always sprint."
+    },
+    "alterasc.enhancedcontrols.feature.shiftclicktowalk.description": {
+      "Text": "Shift + Click to force walk"
+    },
+    "alterasc.enhancedcontrols.feature.shiftclicktowalk.tooltip-description": {
+      "Text": "Makes Shift + Click send character walking to destination instead of walk/run/sprint being determined based on distance. Ignores walk toggle state."
     }
   }
 }
