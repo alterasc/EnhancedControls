@@ -1,5 +1,6 @@
 ﻿using EnhancedControls.Features;
 using EnhancedControls.Features.Camera;
+using EnhancedControls.Features.Highlight;
 using EnhancedControls.Settings;
 using EnhancedControls.UI;
 using HarmonyLib;
@@ -18,9 +19,15 @@ namespace EnhancedControls;
 public class ModSettings
 {
     public IReadOnlyList<ModSettingEntry> modSettings = new List<ModSettingEntry> {
-        new HighlightToggle(),
+
         new WalkToggle(),
         new ShiftClickToWalk(),
+    };
+
+    public IReadOnlyList<ModSettingEntry> highlight = new List<ModSettingEntry>
+    {
+        new HighlightToggle(),
+        new PartialHighlightNPCs()
     };
 
     public IReadOnlyList<ModSettingEntry> camera = new List<ModSettingEntry>
@@ -36,6 +43,11 @@ public class ModSettings
         Initialized = true;
 
         foreach (ModSettingEntry setting in modSettings)
+        {
+            setting.BuildUIAndLink();
+            setting.TryEnable();
+        }
+        foreach (ModSettingEntry setting in highlight)
         {
             setting.BuildUIAndLink();
             setting.TryEnable();
@@ -84,6 +96,11 @@ public static class SettingsUIPatches
         Game.Instance.UISettingsManager.m_ControlSettingsList.Add(
             OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.group.main", "Enhanced Controls",
                 ModSettings.Instance.modSettings.Select(x => x.GetUISettings()).ToArray()
+                ));
+
+        Game.Instance.UISettingsManager.m_ControlSettingsList.Add(
+            OwlcatUITools.MakeSettingsGroup($"{ModSettingEntry.PREFIX}.group.highlight", "Enhanced Controls - Object Highlight",
+                ModSettings.Instance.highlight.Select(x => x.GetUISettings()).ToArray()
                 ));
 
         Game.Instance.UISettingsManager.m_ControlSettingsList.Add(

@@ -39,10 +39,17 @@ internal class ModLocalizationManager
         }
 #if DEBUG
         var localizationFolder = Path.Combine(Main.ModEntry.Path, "Localization");
+        if (!Directory.Exists(localizationFolder))
+        {
+            Directory.CreateDirectory(localizationFolder);
+        }
         var packFile = Path.Combine(localizationFolder, Locale.enGB.ToString() + ".json");
         using StreamWriter file = new(packFile);
         using JsonWriter jsonReader = new JsonTextWriter(file);
-        JsonSerializer serializer = new();
+        JsonSerializer serializer = new()
+        {
+            Formatting = Formatting.Indented
+        };
         serializer.Serialize(jsonReader, enPack);
 #endif
     }

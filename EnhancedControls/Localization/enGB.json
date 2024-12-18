@@ -1,23 +1,5 @@
 {
   "Strings": {
-    "alterasc.enhancedcontrols.feature.highlighttoggle.description": {
-      "Text": "Toggle Highlight Objects"
-    },
-    "alterasc.enhancedcontrols.feature.highlighttoggle.tooltip-description": {
-      "Text": "Toggles object highlighting."
-    },
-    "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.description": {
-      "Text": "Rotate camera with right mouse button (Experimental)"
-    },
-    "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.tooltip-description": {
-      "Text": "Rotate camera with right mouse button instead of middle. You WILL lose some functionality normally done with RMB. See description."
-    },
-    "alterasc.enhancedcontrols.group.main": {
-      "Text": "Enhanced Controls"
-    },
-    "alterasc.enhancedcontrols.group.camera": {
-      "Text": "Enhanced Controls - Camera"
-    },
     "alterasc.enhancedcontrols.feature.walktoggle.description": {
       "Text": "Toggle Walk/Run/Sprint"
     },
@@ -29,6 +11,33 @@
     },
     "alterasc.enhancedcontrols.feature.shiftclicktowalk.tooltip-description": {
       "Text": "Makes Shift + Click send character walking to destination instead of walk/run/sprint being determined based on distance. Ignores walk toggle state."
+    },
+    "alterasc.enhancedcontrols.feature.highlighttoggle.description": {
+      "Text": "Toggle partial object highlight"
+    },
+    "alterasc.enhancedcontrols.feature.highlighttoggle.tooltip-description": {
+      "Text": "Toggles partial highlighting of map objects and bodies with loot. To highlight the rest, press normal highlight key."
+    },
+    "alterasc.enhancedcontrols.feature.partialhighlightnpc.description": {
+      "Text": "Partial highlight shows NPC names"
+    },
+    "alterasc.enhancedcontrols.feature.partialhighlightnpc.tooltip-description": {
+      "Text": "Makes partial highlight show names of most alive NPCs."
+    },
+    "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.description": {
+      "Text": "Rotate camera with right mouse button"
+    },
+    "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.tooltip-description": {
+      "Text": "Rotate camera with right mouse button instead of middle. You WILL lose some functionality normally done with RMB. See description."
+    },
+    "alterasc.enhancedcontrols.group.main": {
+      "Text": "Enhanced Controls"
+    },
+    "alterasc.enhancedcontrols.group.highlight": {
+      "Text": "Enhanced Controls - Object Highlight"
+    },
+    "alterasc.enhancedcontrols.group.camera": {
+      "Text": "Enhanced Controls - Camera"
     }
   }
 }

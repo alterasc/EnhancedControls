@@ -96,6 +96,10 @@
 			<HintPath>$(RogueTraderInstallDir)\WH40KRT_Data\Managed\UnityEngine.UI.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="Utility.GameConsts">
+			<HintPath>$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Utility.GameConsts.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 		<Reference Include="LocalizationShared">
 			<HintPath>$(RogueTraderInstallDir)\WH40KRT_Data\Managed\LocalizationShared.dll</HintPath>
 			<Private>False</Private>
