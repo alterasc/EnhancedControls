@@ -12,6 +12,12 @@
     "alterasc.enhancedcontrols.feature.shiftclicktowalk.tooltip-description": {
       "Text": "Makes Shift + Click send character walking to destination instead of walk/run/sprint being determined based on distance. Ignores walk toggle state."
     },
+    "alterasc.enhancedcontrols.feature.hideselectiondecals.description": {
+      "Text": "Hide selection circles around characters during exploration"
+    },
+    "alterasc.enhancedcontrols.feature.hideselectiondecals.tooltip-description": {
+      "Text": "Hides selection circles around characters during exploration."
+    },
     "alterasc.enhancedcontrols.feature.highlighttoggle.description": {
       "Text": "Toggle partial object highlight"
     },
