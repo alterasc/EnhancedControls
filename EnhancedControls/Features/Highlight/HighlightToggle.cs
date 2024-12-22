@@ -1,11 +1,12 @@
 ﻿using EnhancedControls.Settings;
 using HarmonyLib;
-using Kingmaker.Code.UI.MVVM.View.Space;
-using Kingmaker.Code.UI.MVVM.View.Surface;
-using Kingmaker.Code.UI.MVVM.View.SurfaceCombat.PC;
+using Kingmaker;
 using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
+using Kingmaker.PubSubSystem;
+using Kingmaker.PubSubSystem.Core;
 using Kingmaker.View.Mechanics.Entities;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
@@ -22,40 +23,25 @@ public class HighlightToggle : ModHotkeySettingEntry
 
     public HighlightToggle() : base(_key, _title, _tooltip, _defaultValue) { }
 
-    [HarmonyPatch]
-    private static class Patches
+    public override SettingStatus TryEnable()
     {
-        /// <summary>
-        /// After enabling InteractionHighlightController binds action 
-        /// and restores highlight state to previously recorded
-        /// </summary>
-        /// <param name="__instance"></param>
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(InteractionHighlightController), nameof(InteractionHighlightController.OnEnable))]
-        private static bool AfterOnEnable(InteractionHighlightController __instance)
+        var baseStatus = base.TryEnable();
+        if (baseStatus == SettingStatus.WORKING)
         {
-            HighlightManager.OnEnableController(__instance);
-            return false;
+            highlightGameModHandler ??= EventBus.Subscribe(new HighlightGameModeHandler());
         }
+        return baseStatus;
+    }
 
-        /// <summary>
-        /// Unbinds key on disabling InteractionHighlightController
-        /// </summary>
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(InteractionHighlightController), nameof(InteractionHighlightController.OnDisable))]
-        private static bool OnDisableReplacer(InteractionHighlightController __instance)
-        {
-            HighlightManager.OnDisableController(__instance);
-            return false;
-        }
+    private static IDisposable highlightGameModHandler;
 
-        /// <summary>
-        /// Disables hightlight in cutscenes and dialogues
-        /// </summary>
-        /// <param name="gameMode"></param>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SurfaceHUDPCView), nameof(SurfaceHUDPCView.OnGameModeStart))]
-        private static void DisableOnDialogAndCutscene(GameModeType gameMode)
+    /// <summary>
+    /// Disables hightlight in cutscenes and dialogues
+    /// </summary>
+    /// <param name="gameMode"></param>
+    public class HighlightGameModeHandler : IGameModeHandler
+    {
+        public void OnGameModeStart(GameModeType gameMode)
         {
             if (gameMode == GameModeType.Cutscene || gameMode == GameModeType.Dialog || gameMode == GameModeType.CutsceneGlobalMap)
             {
@@ -67,46 +53,60 @@ public class HighlightToggle : ModHotkeySettingEntry
             }
         }
 
+        public void OnGameModeStop(GameModeType gameMode) { }
+    }
+
+    /// <summary>
+    /// Patches of InteractionHighlightController
+    /// </summary>
+    [HarmonyPatch(typeof(InteractionHighlightController))]
+    private static class HighlightControllerPatches
+    {
         /// <summary>
-        /// Disables highlight on surface combat start, because in surface combat you can't perform actions
-        /// while highlighting is up
-        /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SurfaceBaseView), nameof(SurfaceBaseView.ActivateCombatInputLayer))]
-        private static void DisableOnCombatStart()
+        /// Does usual stuff, binds additional button and 
+        /// restores passive highlight if necessary
+        /// <param name="__instance"></param>
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(InteractionHighlightController.OnEnable))]
+        private static bool OnEnableReplacer(InteractionHighlightController __instance)
         {
-            HighlightManager.SuppressPassiveHighlight();
+            HighlightManager.OnEnableController(__instance);
+            return false;
         }
 
         /// <summary>
-        /// Restores highlight toggle state after surface combat end
+        /// Unbinds key on disabling InteractionHighlightController
         /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SurfaceBaseView), nameof(SurfaceBaseView.DeactivateCombatInputLayer))]
-        private static void RestoreStateOnCombatEnd()
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(InteractionHighlightController.OnDisable))]
+        private static bool OnDisableReplacer(InteractionHighlightController __instance)
         {
-            HighlightManager.RestorePassiveHighlight();
+            HighlightManager.OnDisableController(__instance);
+            return false;
         }
+    }
 
+    [HarmonyPatch]
+    private static class Patches
+    {
         /// <summary>
-        /// Disables highlight on space combat start, because in space combat you can't perform actions
-        /// while highlighting is up
+        /// Suppresses highlight on combat start, restores on combat end
         /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SpaceBaseView), nameof(SpaceBaseView.ActivateCombatInputLayer))]
-        private static void DisableOnSpaceCombatStart()
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Player), nameof(Player.IsInCombat), MethodType.Setter)]
+        private static void BeforeIsInCombatSet(Player __instance, bool value)
         {
-            HighlightManager.SuppressPassiveHighlight();
-        }
-
-        /// <summary>
-        /// Restores highlight on space combat end
-        /// </summary>
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(SpaceBaseView), nameof(SpaceBaseView.DeactivateCombatInputLayer))]
-        private static void RestoreOnSpaceCombatStart()
-        {
-            HighlightManager.RestorePassiveHighlight();
+            if (__instance.IsInCombat != value)
+            {
+                if (value)
+                {
+                    HighlightManager.SuppressPassiveHighlight();
+                }
+                else
+                {
+                    HighlightManager.RestorePassiveHighlight();
+                }
+            }
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ public class HighlightToggle : ModHotkeySettingEntry
         [HarmonyPatch(typeof(AbstractUnitEntityView), nameof(AbstractUnitEntityView.UpdateHighlight))]
         private static IEnumerable<CodeInstruction> ReplaceHighlightCheckForUnit(IEnumerable<CodeInstruction> instructions)
         {
-            var highlightGetter = AccessTools.Method(typeof(InteractionHighlightController), "get_IsHighlighting");
+            var highlightGetter = AccessTools.PropertyGetter(typeof(InteractionHighlightController), nameof(InteractionHighlightController.IsHighlighting));
             foreach (var instruction in instructions)
             {
                 if (instruction.Calls(highlightGetter))
