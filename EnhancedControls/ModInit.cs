@@ -28,6 +28,7 @@ public class ModSettings
     public IReadOnlyList<ModSettingEntry> highlight = new List<ModSettingEntry>
     {
         new HighlightToggle(),
+        new PartialHighlightDefaultState(),
         new PartialHighlightNPCs()
     };
 

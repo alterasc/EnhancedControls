@@ -24,6 +24,12 @@
     "alterasc.enhancedcontrols.feature.highlighttoggle.tooltip-description": {
       "Text": "Toggles partial highlighting of map objects and bodies with loot. To highlight the rest, press normal highlight key."
     },
+    "alterasc.enhancedcontrols.feature.partialhighlightdefaultstate.description": {
+      "Text": "Partial highlighting default state"
+    },
+    "alterasc.enhancedcontrols.feature.partialhighlightdefaultstate.tooltip-description": {
+      "Text": "Partial highlighting default state. On = load into game, partial highlight toggled enabled, Off = disabled"
+    },
     "alterasc.enhancedcontrols.feature.partialhighlightnpc.description": {
       "Text": "Partial highlight shows NPC names"
     },

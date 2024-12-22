@@ -12,12 +12,12 @@ using Kingmaker.View.Mechanics.Entities;
 namespace EnhancedControls.Features.Highlight;
 public static class HighlightManager
 {
-    private static bool isBasicHighlightToggledOn = false;
+    public static bool IsBasicHighlightToggledOn = false;
     private static bool isBasicHighlightSuppressed = false;
     private static bool isFullHighlightOn = false;
 
     public static bool PartialHighlightNPCs = false;
-    private static bool BasicHiglightActive => isBasicHighlightToggledOn && !isBasicHighlightSuppressed;
+    private static bool BasicHiglightActive => IsBasicHighlightToggledOn && !isBasicHighlightSuppressed;
 
     public static bool UnitHighlight(InteractionHighlightController _, AbstractUnitEntityView view)
     {
@@ -154,7 +154,7 @@ public static class HighlightManager
 
     public static void TogglePassiveHighlight()
     {
-        isBasicHighlightToggledOn = !isBasicHighlightToggledOn;
+        IsBasicHighlightToggledOn = !IsBasicHighlightToggledOn;
         if (Game.Instance.Player.IsInCombat) return;
         UpdateHighlight();
     }
