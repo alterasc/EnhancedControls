@@ -74,6 +74,9 @@ public abstract class ModSettingEntry
         {
             Main.log.Error($"{Title} patch exception: {ex.Message}");
             Status = SettingStatus.ERROR;
+#if DEBUG
+            throw ex;
+#endif
         }
         return Status;
     }
