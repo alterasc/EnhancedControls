@@ -22,7 +22,8 @@ public class ModSettings
 
         new WalkToggle(),
         new ShiftClickToWalk(),
-        new HideSelectionDecals()
+        new HideSelectionDecals(),
+        new HideControllerSelectionDecals()
     };
 
     public IReadOnlyList<ModSettingEntry> highlight = new List<ModSettingEntry>

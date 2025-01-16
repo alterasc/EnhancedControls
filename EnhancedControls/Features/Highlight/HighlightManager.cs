@@ -17,7 +17,7 @@ public static class HighlightManager
     private static bool isFullHighlightOn = false;
 
     public static bool PartialHighlightNPCs = false;
-    private static bool BasicHiglightActive => IsBasicHighlightToggledOn && !isBasicHighlightSuppressed;
+    private static bool BasicHiglightActive => IsBasicHighlightToggledOn && !isBasicHighlightSuppressed && Game.Instance.ControllerMode == Game.ControllerModeType.Mouse;
 
     public static bool UnitHighlight(InteractionHighlightController _, AbstractUnitEntityView view)
     {

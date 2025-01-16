@@ -42,6 +42,12 @@
     "alterasc.enhancedcontrols.feature.rotatecamerawithrmb.tooltip-description": {
       "Text": "Rotate camera with right mouse button instead of middle. You WILL lose some functionality normally done with RMB. See description."
     },
+    "alterasc.enhancedcontrols.feature.hidecontrollerselectiondecals.description": {
+      "Text": "Hide controller selection circles around characters during exploration"
+    },
+    "alterasc.enhancedcontrols.feature.hidecontrollerselectiondecals.tooltip-description": {
+      "Text": "Hides controller circles around characters during exploration."
+    },
     "alterasc.enhancedcontrols.group.main": {
       "Text": "Enhanced Controls"
     },
