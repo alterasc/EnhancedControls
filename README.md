@@ -3,7 +3,7 @@
 Adds UX related stuff. 
 
 If you're a user, downloads are on the right. See **Releases** link.
-You can see detailed mod description on [Nexus page](https://www.nexusmods.com/warhammer40kroguetrader/mods/14) or [Steam workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=3114200965) (or in Workshop-description.txt file).
+You can see detailed mod description on [Nexus page](https://www.nexusmods.com/warhammer40kroguetrader/mods/14).
 
 
 ## How to build
