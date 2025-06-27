@@ -25,6 +25,7 @@
 		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Kingmaker.Settings.Interfaces.dll" Private="false" />
 		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Kingmaker.UI.InputSystems.Enums.dll" Private="false" />
 		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Kingmaker.Utility.Enums.dll" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Kingmaker.UI.Models.Log.Enums.dll" Private="false" />
 		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\LocalizationShared.dll" Private="false" />
 		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Newtonsoft.Json.dll" Private="false" />
 		<Reference Include="$(RogueTraderInstallDir)\WH40KRT_Data\Managed\Owlcat.Runtime.Core.dll*" Publicize="true" Private="false" />

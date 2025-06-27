@@ -52,7 +52,7 @@ indent_size = 4
 end_of_line = crlf
 dotnet_style_namespace_match_folder = true:warning
 dotnet_style_coalesce_expression = true:suggestion
-dotnet_style_null_propagation = true:suggestion
+dotnet_style_null_propagation = true:none
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
 dotnet_style_prefer_auto_properties = true:silent
 dotnet_style_object_initializer = true:suggestion
@@ -80,6 +80,9 @@ dotnet_style_qualification_for_field = false:silent
 dotnet_style_qualification_for_property = false:silent
 dotnet_style_qualification_for_method = false:silent
 dotnet_style_qualification_for_event = false:silent
+
+# IDE0031: Use null propagation
+dotnet_diagnostic.IDE0031.severity = none
 
 [*.cs]
 csharp_using_directive_placement = outside_namespace:silent

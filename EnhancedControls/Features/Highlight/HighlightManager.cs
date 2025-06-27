@@ -71,13 +71,19 @@ public static class HighlightManager
         baseGameController.m_IsHighlighting = true;
         foreach (MapObjectEntity mapObjectEntity in Game.Instance.State.MapObjects)
         {
-            mapObjectEntity.View?.UpdateHighlight();
+            if (mapObjectEntity.View != null)
+            {
+                mapObjectEntity.View.UpdateHighlight();
+            }
         }
         foreach (AbstractUnitEntity abstractUnitEntity in Game.Instance.State.AllUnits)
         {
             if (isFullHighlightOn || abstractUnitEntity.IsDeadAndHasLoot)
             {
-                abstractUnitEntity.View?.UpdateHighlight(false);
+                if (abstractUnitEntity.View != null)
+                {
+                    abstractUnitEntity.View.UpdateHighlight(false);
+                }
             }
         }
         EventBus.RaiseEvent(delegate (IInteractionHighlightUIHandler h)
@@ -116,11 +122,17 @@ public static class HighlightManager
             baseGameController.m_IsHighlighting = false;
             foreach (MapObjectEntity mapObjectEntity in Game.Instance.State.MapObjects)
             {
-                mapObjectEntity.View?.UpdateHighlight();
+                if (mapObjectEntity.View != null)
+                {
+                    mapObjectEntity.View.UpdateHighlight();
+                }
             }
             foreach (AbstractUnitEntity abstractUnitEntity in Game.Instance.State.AllUnits)
             {
-                abstractUnitEntity.View?.UpdateHighlight(false);
+                if (abstractUnitEntity.View != null)
+                {
+                    abstractUnitEntity.View.UpdateHighlight(false);
+                }
             }
             EventBus.RaiseEvent(delegate (IInteractionHighlightUIHandler h)
             {

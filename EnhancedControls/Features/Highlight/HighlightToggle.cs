@@ -5,6 +5,7 @@ using Kingmaker.Controllers.MapObjects;
 using Kingmaker.GameModes;
 using Kingmaker.PubSubSystem;
 using Kingmaker.PubSubSystem.Core;
+using Kingmaker.Utility;
 using Kingmaker.View.Mechanics.Entities;
 using System;
 using System.Collections.Generic;
@@ -92,9 +93,9 @@ public class HighlightToggle : ModHotkeySettingEntry
         /// <summary>
         /// Suppresses highlight on combat start, restores on combat end
         /// </summary>
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(Player), nameof(Player.IsInCombat), MethodType.Setter)]
-        private static void BeforeIsInCombatSet(Player __instance, bool value)
+        private static void AfterIsInCombatSet(Player __instance, bool value)
         {
             if (__instance.IsInCombat != value)
             {
@@ -106,6 +107,19 @@ public class HighlightToggle : ModHotkeySettingEntry
                 {
                     HighlightManager.RestorePassiveHighlight();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Additional trigger for disabling highlight
+        /// </summary>
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ReportCombatLogManager), nameof(ReportCombatLogManager.HandlePartyCombatStateChanged))]
+        private static void AfterIsInCombatSetLog(ReportCombatLogManager __instance, bool isStarted)
+        {
+            if (isStarted)
+            {
+                HighlightManager.SuppressPassiveHighlight();
             }
         }
 
