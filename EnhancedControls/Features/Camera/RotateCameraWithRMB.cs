@@ -63,89 +63,43 @@ public class RotateCameraWithRMB : ModToggleSettingEntry
         }
 
         /// <summary>
-        /// Remove from PointerController "drag mouse while holding RMB to position party"
+        /// Removes all drag to move functionality
         /// </summary>
+        /// <param name="instructions"></param>
+        /// <returns></returns>
         [HarmonyPatch(typeof(PointerController), nameof(PointerController.Tick))]
         [HarmonyTranspiler]
-        private static IEnumerable<CodeInstruction> RemoveRMBFromPointerController(IEnumerable<CodeInstruction> instructions)
+        static IEnumerable<CodeInstruction> RemoveRightClickMovementAfterDrag(IEnumerable<CodeInstruction> instructions)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            /*  There are three times it's used. All look the same 
+             *  
+             *      IDragClickEventHandler dragClickEventHandler = this.m_MouseDownHandler as IDragClickEventHandler;
+			 *      if (dragClickEventHandler != null ...
+             *
+             *  Null check is there in all three places.
+             *  So I discard original value and put null into dragClickEventHandler variable
+             *  
+             *  Should null check disappear, things will break with NRE.
+             *  Let's hope it doesn't happen
+             */
+            var codeMatcher = new CodeMatcher(instructions);
 
-            var mouseDownButtonField = AccessTools.Field(typeof(PointerController), nameof(PointerController.m_MouseDownButton));
-
-            //remove first else block
-            var idx = newInstructions.FindIndex(x => x.LoadsField(mouseDownButtonField));
-            while (idx != -1)
+            for (var i = 0; i < 3; i++)
             {
-                var next = newInstructions[idx + 1];
-                if (next.Branches(out var labelTo))
-                {
-                    var jumpTo = newInstructions.FindIndex(idx + 1, x => x.labels.Contains((Label)labelTo) && x.opcode == OpCodes.Ldarg_0);
-                    if (jumpTo != -1)
-                    {
-                        var beforeJump = newInstructions[jumpTo - 1];
-                        if (beforeJump.Branches(out var uncondJump))
-                        {
-                            if (newInstructions[jumpTo + 1].LoadsField(AccessTools.Field(typeof(PointerController), nameof(PointerController.m_MouseDownHandler))))
-                            {
-                                newInstructions.Insert(jumpTo + 1, new CodeInstruction(newInstructions[jumpTo].opcode));
-                                newInstructions.Insert(jumpTo + 1, new CodeInstruction(beforeJump));
-                                newInstructions.Insert(jumpTo + 1, new CodeInstruction(OpCodes.Pop));
-                                Main.log.Log($"PointerController.Tick first edit done, line {jumpTo + 1}");
-                                break;
-                            }
-                        }
-                    }
-                }
-                idx = newInstructions.FindIndex(idx + 1, x => x.LoadsField(mouseDownButtonField));
+                codeMatcher.MatchStartForward(
+                        new CodeMatch(new CodeInstruction(OpCodes.Ldarg_0)),
+                        new CodeMatch(CodeInstruction.LoadField(typeof(PointerController), nameof(PointerController.m_MouseDownHandler))),
+                        new CodeMatch(new CodeInstruction(OpCodes.Isinst, typeof(IDragClickEventHandler))),
+                        new CodeMatch(new CodeInstruction(OpCodes.Stloc_S))
+                    )
+                    .Advance(3)
+                    .Insert(
+                        new CodeInstruction(OpCodes.Pop),
+                        new CodeInstruction(OpCodes.Ldnull)
+                    );
             }
-
-            //remove second block
-            idx = newInstructions.FindIndex(idx + 1, x => x.LoadsField(mouseDownButtonField));
-            while (idx != -1)
-            {
-                var next = newInstructions[idx + 1];
-                if (next.Branches(out var labelTo))
-                {
-                    var jumpTo = newInstructions.FindIndex(idx + 1, x => x.labels.Contains((Label)labelTo) && x.opcode == OpCodes.Ldarg_0);
-                    if (jumpTo != -1)
-                    {
-                        var beforeJump = newInstructions[jumpTo - 1];
-                        if (beforeJump.Branches(out var uncondJump))
-                        {
-                            if (newInstructions[jumpTo + 1].LoadsField(AccessTools.Field(typeof(PointerController), nameof(PointerController.m_MouseDownHandler))))
-                            {
-                                newInstructions.Insert(jumpTo + 1, new CodeInstruction(newInstructions[jumpTo].opcode));
-                                newInstructions.Insert(jumpTo + 1, new CodeInstruction(beforeJump));
-                                newInstructions.Insert(jumpTo + 1, new CodeInstruction(OpCodes.Pop));
-                                Main.log.Log($"PointerController.Tick second edit done, line {jumpTo + 1}");
-                                break;
-                            }
-                        }
-                    }
-                }
-                idx = newInstructions.FindIndex(idx + 1, x => x.LoadsField(mouseDownButtonField));
-            }
-
-            //remove last if block
-            idx = newInstructions.FindIndex(idx + 1, x => x.LoadsField(mouseDownButtonField));
-            while (idx != -1)
-            {
-                var next = newInstructions[idx + 1];
-                if (next.opcode == OpCodes.Ldc_I4_1)
-                {
-                    if (newInstructions[idx + 2].Branches(out var jumpTo))
-                    {
-                        newInstructions[idx + 1].opcode = OpCodes.Ldc_I4;
-                        newInstructions[idx + 1].operand = -99;
-                        Main.log.Log($"PointerController.Tick third edit done, line {idx + 1}");
-                        break;
-                    }
-                }
-                idx = newInstructions.FindIndex(idx + 1, x => x.LoadsField(mouseDownButtonField));
-            }
-
-            return newInstructions;
+            Main.log.Log("Removed PointerController drag functionality.");
+            return codeMatcher.Instructions();
         }
     }
 }
